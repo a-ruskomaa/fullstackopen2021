@@ -1,5 +1,4 @@
-require('dotenv').config()
-const http = require('http')
+const config = require('./config/config')
 const express = require('express')
 const app = express()
 const cors = require('cors')
@@ -14,7 +13,7 @@ const blogSchema = mongoose.Schema({
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-const mongoUrl = process.env.MONGODB_URI
+const mongoUrl = config.MONGODB_URI
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 
 app.use(cors())
