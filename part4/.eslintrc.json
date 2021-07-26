@@ -28,10 +28,19 @@
         "eqeqeq": "error",
         "no-trailing-spaces": "error",
         "object-curly-spacing": [
-            "error", "always"
+            "error",
+            "always"
         ],
         "arrow-spacing": [
-            "error", { "before": true, "after": true }
+            "error",
+            {
+                "before": true,
+                "after": true
+            }
+        ],
+        "eol-last": [
+            "error",
+            "always"
         ]
     }
 }
