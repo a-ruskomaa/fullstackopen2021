@@ -123,3 +123,27 @@ describe('favorite blog', () => {
     expect(favoriteBlogs).toContainEqual(result)
   })
 })
+
+describe('most blogs', () => {
+  test('is the only blog of the list', () => {
+    const onlyBlog = blogs[0]
+    const result = listHelper.mostBlogs([onlyBlog])
+    expect(result).toEqual({
+      author: onlyBlog.author,
+      blogs: 1,
+    })
+  })
+
+  test('empty list returns undefined', () => {
+    const result = listHelper.mostBlogs([])
+    expect(result).toEqual(undefined)
+  })
+
+  test('is correct', () => {
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 3,
+    })
+  })
+})
