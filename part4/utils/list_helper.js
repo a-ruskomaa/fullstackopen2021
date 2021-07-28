@@ -32,9 +32,32 @@ const mostBlogs = (blogs) => {
   }
 }
 
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) {
+    return undefined
+  }
+  const bloggerLikes = blogs.reduce((map, blog) => {
+    const totalLikes = map[blog.author]
+    return {
+      ...map,
+      [blog.author]: totalLikes ? totalLikes + blog.likes : blog.likes,
+    }
+  }, {})
+
+  const [author, likeCount] = Object.entries(bloggerLikes)
+    .sort((a, b) => a[1] - b[1])
+    .pop()
+
+  return {
+    author,
+    likes: likeCount,
+  }
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 }

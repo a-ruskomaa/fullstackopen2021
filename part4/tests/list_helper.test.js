@@ -147,3 +147,27 @@ describe('most blogs', () => {
     })
   })
 })
+
+describe('most likes', () => {
+  test('is equal to likes of the only blog in the list', () => {
+    const onlyBlog = blogs[0]
+    const result = listHelper.mostLikes([onlyBlog])
+    expect(result).toEqual({
+      author: onlyBlog.author,
+      likes: onlyBlog.likes,
+    })
+  })
+
+  test('empty list returns undefined', () => {
+    const result = listHelper.mostLikes([])
+    expect(result).toEqual(undefined)
+  })
+
+  test('is correct', () => {
+    const result = listHelper.mostLikes(blogs)
+    expect(result).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 17,
+    })
+  })
+})
