@@ -88,6 +88,26 @@ describe('POST /api/blogs', () => {
 
     expect(response.body).toHaveProperty('likes', 0)
   })
+
+  test('returns bad request if title not set', async () => {
+    const testBlog = {
+      author: 'Dummy Author',
+      url: 'http://blog.example.com/',
+      likes: 13,
+    }
+
+    await api.post('/api/blogs').send(testBlog).expect(400)
+  })
+
+  test('returns bad request if url not set', async () => {
+    const testBlog = {
+      title: 'Dummy Title',
+      author: 'Dummy Author',
+      likes: 13,
+    }
+
+    await api.post('/api/blogs').send(testBlog).expect(400)
+  })
 })
 
 afterAll(() => {
