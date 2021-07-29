@@ -14,6 +14,7 @@
   "devDependencies": {
     "eslint": "^7.31.0",
     "jest": "^27.0.6",
+    "jest-chain": "^1.1.5",
     "nodemon": "^2.0.12",
     "supertest": "^6.1.4"
   },
@@ -24,6 +25,9 @@
     "mongoose": "^5.13.3"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "jest-chain"
+    ]
   }
 }
