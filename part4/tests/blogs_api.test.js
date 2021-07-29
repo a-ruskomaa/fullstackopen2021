@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
-const { initialBlogs } = require('./helper')
+const { initialBlogs, blogsInDb } = require('./helper')
 const Blog = require('../models/blog')
 
 const api = supertest(app)
@@ -72,9 +72,8 @@ describe('POST /api/blogs', () => {
     }
 
     await api.post('/api/blogs').send(testBlog)
-    const response = await api.get('/api/blogs')
 
-    expect(response.body).toHaveLength(initialBlogs.length + 1)
+    expect(await blogsInDb()).toHaveLength(initialBlogs.length + 1)
   })
 
   test('sets default value of 0 if likes not set', async () => {
