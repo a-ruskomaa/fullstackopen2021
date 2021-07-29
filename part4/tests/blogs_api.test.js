@@ -11,8 +11,8 @@ beforeEach(async () => {
   await Blog.insertMany(initialBlogs)
 })
 
-describe('get all blogs', () => {
-  test('content type is json', async () => {
+describe('GET /api/blogs', () => {
+  test('has content type set as json', async () => {
     await api
       .get('/api/blogs')
       .expect(200)
@@ -24,9 +24,57 @@ describe('get all blogs', () => {
     expect(response.body).toHaveLength(initialBlogs.length)
   })
 
-  test('has attribute called "id"', async () => {
+  test('a blog has attribute called "id"', async () => {
     const response = await api.get('/api/blogs')
     expect(response.body[0].id).toBeDefined()
+  })
+})
+
+describe('POST /api/blogs', () => {
+  test('has content type set as json', async () => {
+    const testBlog = {
+      title: 'Dummy Title',
+      author: 'Dummy Author',
+      url: 'http://blog.example.com/',
+      likes: 13,
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(testBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+  })
+
+  test('saves the correct blog', async () => {
+    const testBlog = {
+      title: 'Dummy Title',
+      author: 'Dummy Author',
+      url: 'http://blog.example.com/',
+      likes: 13,
+    }
+
+    const response = await api.post('/api/blogs').send(testBlog)
+
+    expect(response.body)
+      .toHaveProperty('title', testBlog.title)
+      .toHaveProperty('author', testBlog.author)
+      .toHaveProperty('url', testBlog.url)
+      .toHaveProperty('likes', testBlog.likes)
+  })
+
+  test('increases the total blog count by one', async () => {
+    const testBlog = {
+      title: 'Dummy Title',
+      author: 'Dummy Author',
+      url: 'http://blog.example.com/',
+      likes: 13,
+    }
+
+    await api.post('/api/blogs').send(testBlog)
+    const response = await api.get('/api/blogs')
+
+    expect(response.body).toHaveLength(initialBlogs.length + 1)
   })
 })
 
