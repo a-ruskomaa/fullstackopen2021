@@ -8,7 +8,7 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response) => {
   if (!(request.body.title && request.body.url)) {
-    return response.status(400).end()
+    return response.status(400).send()
   }
 
   const blog = new Blog({
