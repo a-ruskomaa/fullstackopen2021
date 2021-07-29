@@ -76,6 +76,18 @@ describe('POST /api/blogs', () => {
 
     expect(response.body).toHaveLength(initialBlogs.length + 1)
   })
+
+  test('sets default value of 0 if likes not set', async () => {
+    const testBlog = {
+      title: 'Dummy Title',
+      author: 'Dummy Author',
+      url: 'http://blog.example.com/',
+    }
+
+    const response = await api.post('/api/blogs').send(testBlog)
+
+    expect(response.body).toHaveProperty('likes', 0)
+  })
 })
 
 afterAll(() => {
