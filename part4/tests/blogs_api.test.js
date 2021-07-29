@@ -23,6 +23,11 @@ describe('get all blogs', () => {
     const response = await api.get('/api/blogs')
     expect(response.body).toHaveLength(initialBlogs.length)
   })
+
+  test('has attribute called "id"', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body[0].id).toBeDefined()
+  })
 })
 
 afterAll(() => {
