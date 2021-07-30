@@ -19,12 +19,12 @@ describe('GET /api/blogs', () => {
       .expect('Content-Type', /application\/json/)
   })
 
-  test('returns correct number of blogs', async () => {
+  test('returns the correct number of blogs', async () => {
     const response = await api.get('/api/blogs')
     expect(response.body).toHaveLength(initialBlogs.length)
   })
 
-  test('a blog has attribute called "id"', async () => {
+  test('a blog has an attribute called "id"', async () => {
     const response = await api.get('/api/blogs')
     expect(response.body[0].id).toBeDefined()
   })
@@ -76,7 +76,7 @@ describe('POST /api/blogs', () => {
     expect(await blogsInDb()).toHaveLength(initialBlogs.length + 1)
   })
 
-  test('sets default value of 0 if likes not set', async () => {
+  test('sets default value of 0 if likes not provided', async () => {
     const testBlog = {
       title: 'Dummy Title',
       author: 'Dummy Author',
@@ -133,7 +133,7 @@ describe('GET /api/blogs/:id', () => {
       .toHaveProperty('likes', firstBlog.likes)
   })
 
-  test('returns 404 for not found', async () => {
+  test('returns 404 if not found', async () => {
     const nonExistentId = '6103b57241195549152232b7'
 
     await api.get(`/api/blogs/${nonExistentId}`).expect(404)
@@ -141,7 +141,7 @@ describe('GET /api/blogs/:id', () => {
 })
 
 describe('DELETE /api/blogs/:id', () => {
-  test('response has correct status code if succesfully deleted', async () => {
+  test('returns status code of 204 if succesfully deleted', async () => {
     const blogs = await blogsInDb()
     const id = blogs[0].id
 
