@@ -109,6 +109,37 @@ describe('POST /api/blogs', () => {
   })
 })
 
+describe('GET /api/blogs/:id', () => {
+  test('response has content type set as json', async () => {
+    const blogs = await blogsInDb()
+    const id = blogs[0].id
+
+    await api
+      .get(`/api/blogs/${id}`)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  })
+
+  test('response has correct content', async () => {
+    const blogs = await blogsInDb()
+    const firstBlog = blogs[0]
+
+    const response = await api.get(`/api/blogs/${firstBlog.id}`)
+
+    expect(response.body)
+      .toHaveProperty('title', firstBlog.title)
+      .toHaveProperty('author', firstBlog.author)
+      .toHaveProperty('url', firstBlog.url)
+      .toHaveProperty('likes', firstBlog.likes)
+  })
+
+  test('returns 404 for not found', async () => {
+    const nonExistentId = '6103b57241195549152232b7'
+
+    await api.get(`/api/blogs/${nonExistentId}`).expect(404)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })

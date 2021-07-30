@@ -8,7 +8,7 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response) => {
   if (!(request.body.title && request.body.url)) {
-    return response.status(400).send()
+    return response.sendStatus(400)
   }
 
   const blog = new Blog({
@@ -18,6 +18,16 @@ blogsRouter.post('/', async (request, response) => {
 
   const result = await blog.save()
   response.status(201).json(result)
+})
+
+blogsRouter.get('/:id', async (request, response) => {
+  const blog = await Blog.findById(request.params.id)
+
+  if (blog) {
+    response.json(blog)
+  } else {
+    response.sendStatus(404)
+  }
 })
 
 module.exports = blogsRouter
