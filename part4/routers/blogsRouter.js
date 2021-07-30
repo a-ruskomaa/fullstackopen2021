@@ -40,28 +40,34 @@ blogsRouter.get('/:id', async (request, response) => {
 
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {
   const user = request.user
-
   const blog = await Blog.findById(request.params.id)
 
-  if (user._id.toString() === blog.user.toString()) {
-    blog.delete()
-    response.sendStatus(204)
-  } else {
-    response.status(401).json({ error: 'not authorized' })
+  if (user._id.toString() !== blog.user.toString()) {
+    return response.status(401).json({ error: 'not authorized' }).send()
   }
+
+  blog.delete()
+  response.sendStatus(204)
 })
 
 blogsRouter.put('/:id', userExtractor, async (request, response) => {
-  const blog = {
-    ...request.body,
+  const user = request.user
+  const blog = await Blog.findById(request.params.id)
+
+  if (user._id.toString() !== blog.user.toString()) {
+    return response.status(401).json({ error: 'not authorized' }).send()
   }
 
-  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
-    new: true,
+  Object.entries(request.body).forEach(([key, value]) => {
+    if (key !== 'user' || key !== 'id') {
+      blog[key] = value
+    }
   })
 
-  if (updatedBlog) {
-    response.json(updatedBlog)
+  const savedBlog = await blog.save()
+
+  if (savedBlog) {
+    response.json(savedBlog)
   } else {
     response.sendStatus(404)
   }
