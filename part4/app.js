@@ -2,11 +2,12 @@ const config = require('./config/config')
 const express = require('express')
 const app = express()
 const cors = require('cors')
+require('express-async-errors')
 const mongoose = require('mongoose')
 const blogsRouter = require('./routers/blogsRouter')
 const usersRouter = require('./routers/usersRouter')
 const loginRouter = require('./routers/loginRouter')
-require('express-async-errors')
+const { errorHandler, unknownEndpoint } = require('./utils/middleware')
 
 const mongoUrl = config.MONGODB_URI
 mongoose.connect(mongoUrl, {
@@ -22,5 +23,7 @@ app.use(express.json())
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
+app.use(unknownEndpoint)
+app.use(errorHandler)
 
 module.exports = app
