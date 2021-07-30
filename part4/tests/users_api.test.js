@@ -60,9 +60,8 @@ describe('POST /api/users', () => {
 
     const response = await api.post('/api/users').send(testUser)
 
-    expect(response.body)
-      .toHaveProperty('username', testUser.username)
-      .toHaveProperty('name', testUser.name)
+    expect(response.body).toHaveProperty('username', testUser.username)
+    expect(response.body).toHaveProperty('name', testUser.name)
   })
 
   test('increases the total user count by one', async () => {

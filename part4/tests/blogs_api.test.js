@@ -79,11 +79,10 @@ describe('POST /api/blogs', () => {
       .set('Authorization', `bearer ${token}`)
       .send(testBlog)
 
-    expect(response.body)
-      .toHaveProperty('title', testBlog.title)
-      .toHaveProperty('author', testBlog.author)
-      .toHaveProperty('url', testBlog.url)
-      .toHaveProperty('likes', testBlog.likes)
+    expect(response.body).toHaveProperty('title', testBlog.title)
+    expect(response.body).toHaveProperty('author', testBlog.author)
+    expect(response.body).toHaveProperty('url', testBlog.url)
+    expect(response.body).toHaveProperty('likes', testBlog.likes)
   })
 
   test('increases the total blog count by one', async () => {
@@ -171,11 +170,10 @@ describe('GET /api/blogs/:id', () => {
 
     const response = await api.get(`/api/blogs/${firstBlog.id}`)
 
-    expect(response.body)
-      .toHaveProperty('title', firstBlog.title)
-      .toHaveProperty('author', firstBlog.author)
-      .toHaveProperty('url', firstBlog.url)
-      .toHaveProperty('likes', firstBlog.likes)
+    expect(response.body).toHaveProperty('title', firstBlog.title)
+    expect(response.body).toHaveProperty('author', firstBlog.author)
+    expect(response.body).toHaveProperty('url', firstBlog.url)
+    expect(response.body).toHaveProperty('likes', firstBlog.likes)
   })
 
   test('returns 404 if not found', async () => {
@@ -210,9 +208,10 @@ describe('DELETE /api/blogs/:id', () => {
 
     const updatedBlogs = await blogsInDb()
 
-    expect(updatedBlogs.map((blog) => blog.id))
-      .not.toContain(firstBlog.id)
-      .toHaveLength(blogs.length - 1)
+    const blogIds = updatedBlogs.map((blog) => blog.id)
+
+    expect(blogIds).not.toContain(firstBlog.id)
+    expect(blogIds).toHaveLength(blogs.length - 1)
   })
 })
 
