@@ -141,7 +141,7 @@ describe('GET /api/blogs/:id', () => {
 })
 
 describe('DELETE /api/blogs/:id', () => {
-  test('response has status code if succesfully deleted', async () => {
+  test('response has correct status code if succesfully deleted', async () => {
     const blogs = await blogsInDb()
     const id = blogs[0].id
 
@@ -159,6 +159,38 @@ describe('DELETE /api/blogs/:id', () => {
     expect(updatedBlogs.map((blog) => blog.id))
       .not.toContain(firstBlog.id)
       .toHaveLength(blogs.length - 1)
+  })
+})
+
+describe('PUT /api/blogs/:id', () => {
+  test('response has content type set as json', async () => {
+    const blogs = await blogsInDb()
+    const firstBlog = blogs[0]
+
+    await api
+      .put(`/api/blogs/${firstBlog.id}`)
+      .send(firstBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  })
+
+  test('updates the correct post', async () => {
+    const blogs = await blogsInDb()
+    const firstBlog = blogs[0]
+    const updatedBlog = {
+      ...firstBlog,
+      likes: 42,
+    }
+
+    const result = await api.put(`/api/blogs/${firstBlog.id}`).send(updatedBlog)
+
+    expect(result.body).toHaveProperty('likes', 42)
+
+    const updatedBlogInDb = (await blogsInDb()).find(
+      (blog) => (blog.id = firstBlog.id)
+    )
+
+    expect(updatedBlogInDb).toHaveProperty('likes', 42)
   })
 })
 
