@@ -53,7 +53,7 @@ const initialUser = {
   password: 'password',
 }
 
-const getInitialUser = async () => {
+const getInitialUserModel = async () => {
   const passwordHash = await bcrypt.hash(initialUser.password, 10)
   return new User({
     username: initialUser.username,
@@ -80,7 +80,8 @@ const usersInDb = async () => {
 
 module.exports = {
   initialBlogs,
-  getInitialUser,
+  initialUser,
+  getInitialUserModel,
   getJwtForInitialUser,
   blogsInDb,
   usersInDb,

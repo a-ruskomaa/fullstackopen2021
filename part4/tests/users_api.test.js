@@ -1,14 +1,14 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
-const { usersInDb, getInitialUser } = require('./helper')
+const { usersInDb, getInitialUserModel } = require('./helper')
 const User = require('../models/user')
 
 const api = supertest(app)
 
 beforeEach(async () => {
   await User.deleteMany({})
-  const initialUser = await getInitialUser()
+  const initialUser = await getInitialUserModel()
   await initialUser.save()
 })
 
