@@ -46,7 +46,7 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
     return response.status(401).json({ error: 'not authorized' }).send()
   }
 
-  blog.delete()
+  await blog.delete()
   response.sendStatus(204)
 })
 
