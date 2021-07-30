@@ -61,9 +61,7 @@ const getInitialUserModel = async () => {
   })
 }
 
-const getJwtForInitialUser = async () => {
-  const user = await User.findOne({ username: initialUser.username })
-
+const getJwtForUser = (user) => {
   const userForToken = {
     username: user.username,
     id: user._id,
@@ -82,7 +80,7 @@ module.exports = {
   initialBlogs,
   initialUser,
   getInitialUserModel,
-  getJwtForInitialUser,
+  getJwtForUser,
   blogsInDb,
   usersInDb,
 }

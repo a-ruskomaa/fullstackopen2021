@@ -1,14 +1,30 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
-const { initialBlogs, blogsInDb } = require('./helper')
+const {
+  initialBlogs,
+  blogsInDb,
+  getInitialUserModel,
+  getJwtForUser,
+} = require('./helper')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const api = supertest(app)
 
+var testUser
+
+beforeAll(async () => {
+  await User.deleteMany({})
+  const initialUser = await getInitialUserModel()
+  testUser = await initialUser.save()
+})
+
 beforeEach(async () => {
   await Blog.deleteMany({})
-  await Blog.insertMany(initialBlogs)
+  await Blog.insertMany(
+    initialBlogs.map((blog) => ({ ...blog, user: testUser }))
+  )
 })
 
 describe('GET /api/blogs', () => {
@@ -39,8 +55,11 @@ describe('POST /api/blogs', () => {
       likes: 13,
     }
 
+    const token = await getJwtForUser(testUser)
+
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(testBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -53,8 +72,12 @@ describe('POST /api/blogs', () => {
       url: 'http://blog.example.com/',
       likes: 13,
     }
+    const token = await getJwtForUser(testUser)
 
-    const response = await api.post('/api/blogs').send(testBlog)
+    const response = await api
+      .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
+      .send(testBlog)
 
     expect(response.body)
       .toHaveProperty('title', testBlog.title)
@@ -71,7 +94,12 @@ describe('POST /api/blogs', () => {
       likes: 13,
     }
 
-    await api.post('/api/blogs').send(testBlog)
+    const token = await getJwtForUser(testUser)
+
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
+      .send(testBlog)
 
     expect(await blogsInDb()).toHaveLength(initialBlogs.length + 1)
   })
@@ -83,7 +111,12 @@ describe('POST /api/blogs', () => {
       url: 'http://blog.example.com/',
     }
 
-    const response = await api.post('/api/blogs').send(testBlog)
+    const token = await getJwtForUser(testUser)
+
+    const response = await api
+      .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
+      .send(testBlog)
 
     expect(response.body).toHaveProperty('likes', 0)
   })
@@ -95,7 +128,13 @@ describe('POST /api/blogs', () => {
       likes: 13,
     }
 
-    await api.post('/api/blogs').send(testBlog).expect(400)
+    const token = await getJwtForUser(testUser)
+
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
+      .send(testBlog)
+      .expect(400)
   })
 
   test('returns bad request if url not set', async () => {
@@ -105,7 +144,13 @@ describe('POST /api/blogs', () => {
       likes: 13,
     }
 
-    await api.post('/api/blogs').send(testBlog).expect(400)
+    const token = await getJwtForUser(testUser)
+
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
+      .send(testBlog)
+      .expect(400)
   })
 })
 
@@ -145,14 +190,23 @@ describe('DELETE /api/blogs/:id', () => {
     const blogs = await blogsInDb()
     const id = blogs[0].id
 
-    await api.delete(`/api/blogs/${id}`).expect(204)
+    const token = await getJwtForUser(testUser)
+
+    await api
+      .delete(`/api/blogs/${id}`)
+      .set('Authorization', `bearer ${token}`)
+      .expect(204)
   })
 
   test('deletes the correct post', async () => {
     const blogs = await blogsInDb()
     const firstBlog = blogs[0]
 
-    await api.delete(`/api/blogs/${firstBlog.id}`)
+    const token = await getJwtForUser(testUser)
+
+    await api
+      .delete(`/api/blogs/${firstBlog.id}`)
+      .set('Authorization', `bearer ${token}`)
 
     const updatedBlogs = await blogsInDb()
 
@@ -167,8 +221,11 @@ describe('PUT /api/blogs/:id', () => {
     const blogs = await blogsInDb()
     const firstBlog = blogs[0]
 
+    const token = await getJwtForUser(testUser)
+
     await api
       .put(`/api/blogs/${firstBlog.id}`)
+      .set('Authorization', `bearer ${token}`)
       .send(firstBlog)
       .expect(200)
       .expect('Content-Type', /application\/json/)
@@ -182,7 +239,12 @@ describe('PUT /api/blogs/:id', () => {
       likes: 42,
     }
 
-    const result = await api.put(`/api/blogs/${firstBlog.id}`).send(updatedBlog)
+    const token = await getJwtForUser(testUser)
+
+    const result = await api
+      .put(`/api/blogs/${firstBlog.id}`)
+      .set('Authorization', `bearer ${token}`)
+      .send(updatedBlog)
 
     expect(result.body).toHaveProperty('likes', 42)
 
