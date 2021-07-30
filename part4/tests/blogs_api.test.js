@@ -140,6 +140,28 @@ describe('GET /api/blogs/:id', () => {
   })
 })
 
+describe('DELETE /api/blogs/:id', () => {
+  test('response has status code if succesfully deleted', async () => {
+    const blogs = await blogsInDb()
+    const id = blogs[0].id
+
+    await api.delete(`/api/blogs/${id}`).expect(204)
+  })
+
+  test('deletes the correct post', async () => {
+    const blogs = await blogsInDb()
+    const firstBlog = blogs[0]
+
+    await api.delete(`/api/blogs/${firstBlog.id}`)
+
+    const updatedBlogs = await blogsInDb()
+
+    expect(updatedBlogs.map((blog) => blog.id))
+      .not.toContain(firstBlog.id)
+      .toHaveLength(blogs.length - 1)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
