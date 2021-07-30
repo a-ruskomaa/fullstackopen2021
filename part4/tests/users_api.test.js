@@ -76,6 +76,42 @@ describe('POST /api/users', () => {
 
     expect(await usersInDb()).toHaveLength(2)
   })
+
+  test('accepts only unique usernames', async () => {
+    const testUser = {
+      username: 'testuser',
+      name: 'Test User',
+      password: 'supersecretpassword',
+    }
+
+    const testUser2 = {
+      username: 'testuser',
+      name: 'Test User 2',
+      password: 'supersecretpassword2',
+    }
+
+    await api.post('/api/users').send(testUser)
+    await api.post('/api/users').send(testUser2).expect(400)
+  })
+
+  test('accepts only usernames longer than 2 characters', async () => {
+    const testUser = {
+      username: 'te',
+      name: 'Test User',
+      password: 'supersecretpassword',
+    }
+
+    await api.post('/api/users').send(testUser).expect(400)
+  })
+
+  test('accepts only passwords longer than 2 characters', async () => {
+    const testUser = {
+      username: 'testuser',
+      name: 'Test User',
+      password: 'su',
+    }
+    await api.post('/api/users').send(testUser).expect(400)
+  })
 })
 
 afterAll(() => {
