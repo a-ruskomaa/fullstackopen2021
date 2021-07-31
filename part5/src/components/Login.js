@@ -1,32 +1,22 @@
 import React, { useState } from 'react'
-import loginService from '../services/login'
 
-const Login = ({ setUser, setErrorMessage }) => {
+const Login = ({ handleLogin }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleLogin = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      })
-      setUser(user)
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      setErrorMessage('wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+    const userCredentials = {
+      username,
+      password,
     }
+    handleLogin(userCredentials)
   }
 
   return (
     <div>
       <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleSubmit}>
         <div>
           username
           <input
