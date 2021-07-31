@@ -9,6 +9,11 @@ const App = () => {
   const [user, setUser] = useState(loginService.getFromLocalStorage())
   const [errorMessage, setErrorMessage] = useState(null)
 
+  const handleLogout = () => {
+    loginService.logout()
+    setUser(null)
+  }
+
   return (
     <>
       <h1>Notes</h1>
@@ -20,6 +25,7 @@ const App = () => {
         <>
           <div>
             <p>{user.name} logged in</p>
+            <button onClick={handleLogout}>logout</button>
           </div>
           <Bloglist />
         </>

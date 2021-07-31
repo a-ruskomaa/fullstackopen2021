@@ -8,6 +8,9 @@ const loginService = {
     window.localStorage.setItem('user', JSON.stringify(user))
     return user
   },
+  logout: () => {
+    window.localStorage.removeItem('user')
+  },
   getFromLocalStorage: () => {
     const user = window.localStorage.getItem('user')
     if (user) {
