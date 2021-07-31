@@ -13,7 +13,7 @@ const App = () => {
     <>
       <h1>Notes</h1>
 
-      <Notification message={errorMessage} />
+      <Notification message={errorMessage} className="error" />
       {user === null ? (
         <Login setUser={setUser} setErrorMessage={setErrorMessage} />
       ) : (
