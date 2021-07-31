@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Bloglist from './components/Bloglist'
 import Notification from './components/Notification'
 import Login from './components/Login'
+import loginService from './services/login'
 import './App.css'
 
 const App = () => {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(loginService.getFromLocalStorage())
   const [errorMessage, setErrorMessage] = useState(null)
 
   return (
