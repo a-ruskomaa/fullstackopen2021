@@ -7,3 +7,15 @@
   padding: 10px;
   margin-bottom: 10px;
 }
+
+form {
+  margin: 20px 0;
+}
+
+.form-item {
+  margin: 5px 5px;
+}
+
+.form-item label input {
+  margin-left: 10px;
+}
