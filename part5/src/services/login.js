@@ -11,13 +11,9 @@ const loginService = {
   logout: () => {
     window.localStorage.removeItem('user')
   },
-  getFromLocalStorage: () => {
-    const user = window.localStorage.getItem('user')
-    if (user) {
-      return JSON.parse(user)
-    } else {
-      return null
-    }
+  getUserFromLocalStorage: () => {
+    const storedUser = window.localStorage.getItem('user')
+    return storedUser ? JSON.parse(storedUser) : null
   },
 }
 
