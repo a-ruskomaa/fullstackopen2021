@@ -17,7 +17,7 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
   const blog = new Blog({
     ...request.body,
     likes: request.body.likes ?? 0,
-    user: user._id,
+    user: user,
   })
 
   const result = await blog.save()
@@ -52,9 +52,11 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
 
 blogsRouter.put('/:id', userExtractor, async (request, response) => {
   const user = request.user
-  const blog = await Blog.findById(request.params.id)
+  const blog = await Blog.findById(request.params.id).populate('user', {
+    blogs: 0,
+  })
 
-  if (user._id.toString() !== blog.user.toString()) {
+  if (user._id.toString() !== blog.user._id.toString()) {
     return response.status(401).json({ error: 'not authorized' }).send()
   }
 
