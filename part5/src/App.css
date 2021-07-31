@@ -1,11 +1,18 @@
-.error {
-  color: red;
+.notification {
   background: lightgrey;
   font-size: 20px;
   border-style: solid;
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 10px;
+}
+
+.notification.error {
+  color: red;
+}
+
+.notification.info {
+  color: green;
 }
 
 form {

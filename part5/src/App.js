@@ -8,7 +8,7 @@ import './App.css'
 
 const App = () => {
   const [user, setUser] = useState(loginService.getUserFromLocalStorage())
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     if (user !== null) {
@@ -23,23 +23,31 @@ const App = () => {
       const user = await loginService.login(userCredentials)
       setUser(user)
     } catch (exception) {
-      setErrorMessage('wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      displayNotification('wrong credentials', 'error')
     }
+  }
+
+  const displayNotification = (message, type) => {
+    setNotification({ message, type })
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
   }
 
   const handleLogout = () => {
     loginService.logout()
     setUser(null)
+    displayNotification('logged out', 'info')
   }
 
   return (
     <>
       <h1>Blogs</h1>
 
-      <Notification message={errorMessage} className="error" />
+      {notification ? (
+        <Notification message={notification.message} type={notification.type} />
+      ) : null}
+
       {user === null ? (
         <Login handleLogin={handleLogin} />
       ) : (
@@ -48,7 +56,7 @@ const App = () => {
             <p>{user.name} logged in</p>
             <button onClick={handleLogout}>logout</button>
           </div>
-          <Bloglist />
+          <Bloglist displayNotification={displayNotification} />
         </>
       )}
     </>

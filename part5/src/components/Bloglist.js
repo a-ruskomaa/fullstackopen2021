@@ -3,17 +3,23 @@ import Blog from './Blog'
 import blogService from '../services/blogs'
 import Blogform from './Blogform'
 
-const Bloglist = () => {
+const Bloglist = ({ displayNotification }) => {
   const [blogs, setBlogs] = useState([])
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
 
-  const addNewBlog = (blog) => {
-    blogService.create(blog).then((savedBlog) => {
+  const addNewBlog = async (blog) => {
+    try {
+      const savedBlog = await blogService.create(blog)
       setBlogs(blogs.concat(savedBlog))
-    })
+      displayNotification('new blog added', 'info')
+      return true
+    } catch (error) {
+      console.error(error)
+      return false
+    }
   }
 
   return (
