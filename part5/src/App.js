@@ -11,12 +11,15 @@ const App = () => {
   const [notification, setNotification] = useState(null)
 
   useEffect(() => {
-    if (user !== null) {
-      blogService.setToken(user.token)
-    } else {
-      blogService.setToken(null)
-    }
+    blogService.setToken(user ? user.token : null)
   }, [user])
+
+  const displayNotification = (message, type) => {
+    setNotification({ message, type })
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  }
 
   const handleLogin = async (userCredentials) => {
     try {
@@ -25,13 +28,6 @@ const App = () => {
     } catch (exception) {
       displayNotification('wrong credentials', 'error')
     }
-  }
-
-  const displayNotification = (message, type) => {
-    setNotification({ message, type })
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
   }
 
   const handleLogout = () => {
