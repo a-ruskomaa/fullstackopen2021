@@ -17,23 +17,27 @@ const Login = ({ handleLogin }) => {
     <div>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          username
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
+        <div className="form-item">
+          <label>
+            username
+            <input
+              type="text"
+              value={username}
+              name="Username"
+              onChange={({ target }) => setUsername(target.value)}
+            />
+          </label>
         </div>
-        <div>
-          password
-          <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
+        <div className="form-item">
+          <label>
+            password
+            <input
+              type="password"
+              value={password}
+              name="Password"
+              onChange={({ target }) => setPassword(target.value)}
+            />
+          </label>
         </div>
         <button type="submit">login</button>
       </form>
