@@ -1,12 +1,26 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+import loginService from '../services/login'
 
-const Login = () => {
+const Login = ({ setUser, setErrorMessage }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault()
-    console.log('logging in with', username, password)
+    try {
+      const user = await loginService.login({
+        username,
+        password,
+      })
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    } catch (exception) {
+      setErrorMessage('wrong credentials')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
   }
 
   return (
