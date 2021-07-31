@@ -17,7 +17,12 @@ const App = () => {
       {user === null ? (
         <Login setUser={setUser} setErrorMessage={setErrorMessage} />
       ) : (
-        <Bloglist />
+        <>
+          <div>
+            <p>{user.name} logged in</p>
+          </div>
+          <Bloglist />
+        </>
       )}
     </>
   )
