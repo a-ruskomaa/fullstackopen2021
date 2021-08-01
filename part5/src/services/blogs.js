@@ -31,6 +31,14 @@ const blogService = {
     )
     return response.data
   },
+  delete: async function (id) {
+    const config = {
+      headers: { Authorization: this.token },
+    }
+
+    const response = await axios.delete(`${baseUrl}/${id}`, config)
+    return response.status === 204 ? true : false
+  },
 }
 
 export default blogService

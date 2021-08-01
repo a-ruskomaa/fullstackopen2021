@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, addLike }) => {
+const Blog = ({ blog, addLike, showDelete, deleteBlog }) => {
   const [detailedView, setDetailedView] = useState(false)
 
   const toggleDetailedView = () => {
@@ -17,6 +17,12 @@ const Blog = ({ blog, addLike }) => {
       url: blog.url,
     }
     addLike(updatedBlog)
+  }
+
+  const handleDelete = (event) => {
+    if (window.confirm('Delete blog?')) {
+      deleteBlog(blog.id)
+    }
   }
 
   return (
@@ -36,6 +42,7 @@ const Blog = ({ blog, addLike }) => {
           <p>{blog.user.name}</p>
         </>
       ) : null}
+      {showDelete ? <button onClick={handleDelete}>delete</button> : null}
     </div>
   )
 }

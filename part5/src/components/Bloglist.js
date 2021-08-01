@@ -3,7 +3,7 @@ import Blog from './Blog'
 import blogService from '../services/blogs'
 import Blogform from './Blogform'
 
-const Bloglist = ({ displayNotification }) => {
+const Bloglist = ({ displayNotification, user }) => {
   const [blogs, setBlogs] = useState([])
   const [blogformVisible, setBlogformVisible] = useState(false)
 
@@ -32,6 +32,12 @@ const Bloglist = ({ displayNotification }) => {
     setBlogs(updatedBlogs)
   }
 
+  const deleteBlog = async (id) => {
+    if (await blogService.delete(id)) {
+      setBlogs(blogs.filter((blog) => blog.id !== id))
+    }
+  }
+
   const toggleBlogformVisible = () => {
     setBlogformVisible(!blogformVisible)
   }
@@ -51,7 +57,13 @@ const Bloglist = ({ displayNotification }) => {
         .slice()
         .sort((a, b) => b.likes - a.likes)
         .map((blog) => (
-          <Blog key={blog.id} blog={blog} addLike={addLike} />
+          <Blog
+            key={blog.id}
+            blog={blog}
+            addLike={addLike}
+            deleteBlog={deleteBlog}
+            showDelete={user.username === blog.user.username}
+          />
         ))}
     </div>
   )

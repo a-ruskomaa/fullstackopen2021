@@ -52,7 +52,7 @@ const App = () => {
             <p>{user.name} logged in</p>
             <button onClick={handleLogout}>logout</button>
           </div>
-          <Bloglist displayNotification={displayNotification} />
+          <Bloglist displayNotification={displayNotification} user={user} />
         </>
       )}
     </>
