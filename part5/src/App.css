@@ -26,3 +26,8 @@ form {
 .form-item label input {
   margin-left: 10px;
 }
+
+button {
+  margin: 2px;
+  padding: 2px 5px;
+}
