@@ -28,6 +28,12 @@ form {
 }
 
 button {
-  margin: 2px;
+  margin: 2px 5px;
   padding: 2px 5px;
+}
+
+.blog-item {
+  padding: 0px 5px;
+  border: 1px solid rgb(170, 170, 170);
+  margin: 5px 5px;
 }
