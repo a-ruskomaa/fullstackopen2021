@@ -42,6 +42,10 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
   const user = request.user
   const blog = await Blog.findById(request.params.id)
 
+  if (!blog) {
+    return response.sendStatus(404)
+  }
+
   if (!wasAddedBy(user, blog)) {
     return response.status(401).json({ error: 'not authorized' }).send()
   }
