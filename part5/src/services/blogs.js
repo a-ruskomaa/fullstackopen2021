@@ -19,6 +19,18 @@ const blogService = {
     const response = await axios.post(baseUrl, newObject, config)
     return response.data
   },
+  update: async function (updatedObject) {
+    const config = {
+      headers: { Authorization: this.token },
+    }
+
+    const response = await axios.put(
+      `${baseUrl}/${updatedObject.id}`,
+      updatedObject,
+      config
+    )
+    return response.data
+  },
 }
 
 export default blogService

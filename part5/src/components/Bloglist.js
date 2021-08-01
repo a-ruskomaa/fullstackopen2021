@@ -24,6 +24,14 @@ const Bloglist = ({ displayNotification }) => {
     }
   }
 
+  const addLike = async (blog) => {
+    const savedBlog = await blogService.update(blog)
+    const updatedBlogs = blogs.map((blog) =>
+      blog.id === savedBlog.id ? savedBlog : blog
+    )
+    setBlogs(updatedBlogs)
+  }
+
   const toggleBlogformVisible = () => {
     setBlogformVisible(!blogformVisible)
   }
@@ -40,7 +48,7 @@ const Bloglist = ({ displayNotification }) => {
         <button onClick={toggleBlogformVisible}>Add new blog</button>
       )}
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} addLike={addLike} />
       ))}
     </div>
   )

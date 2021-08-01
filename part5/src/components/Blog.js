@@ -1,9 +1,22 @@
 import React, { useState } from 'react'
-const Blog = ({ blog }) => {
+
+const Blog = ({ blog, addLike }) => {
   const [detailedView, setDetailedView] = useState(false)
 
   const toggleDetailedView = () => {
     setDetailedView(!detailedView)
+  }
+
+  const handleLike = (event) => {
+    const updatedBlog = {
+      id: blog.id,
+      user: blog.user.id,
+      likes: blog.likes + 1,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url,
+    }
+    addLike(updatedBlog)
   }
 
   return (
@@ -18,7 +31,7 @@ const Blog = ({ blog }) => {
         <>
           <p>
             likes {blog.likes}
-            <button>like</button>
+            <button onClick={handleLike}>like</button>
           </p>
           <p>{blog.user.name}</p>
         </>
