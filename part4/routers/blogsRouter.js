@@ -42,7 +42,7 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
   const user = request.user
   const blog = await Blog.findById(request.params.id)
 
-  if (user._id.toString() !== blog.user.toString()) {
+  if (!wasAddedBy(user, blog)) {
     return response.status(401).json({ error: 'not authorized' }).send()
   }
 
@@ -56,12 +56,11 @@ blogsRouter.put('/:id', userExtractor, async (request, response) => {
     blogs: 0,
   })
 
-  if (user._id.toString() !== blog.user._id.toString()) {
-    return response.status(401).json({ error: 'not authorized' }).send()
-  }
-
   Object.entries(request.body).forEach(([key, value]) => {
-    if (key !== 'user' || key !== 'id') {
+    if (key !== 'user' && key !== 'id') {
+      if (!wasAddedBy(user, blog) && key !== 'likes' && blog[key] !== value) {
+        return response.status(401).json({ error: 'not authorized' }).send()
+      }
       blog[key] = value
     }
   })
@@ -74,5 +73,9 @@ blogsRouter.put('/:id', userExtractor, async (request, response) => {
     response.sendStatus(404)
   }
 })
+
+const wasAddedBy = (user, blog) => {
+  return user._id.toString() === blog.user._id.toString()
+}
 
 module.exports = blogsRouter
