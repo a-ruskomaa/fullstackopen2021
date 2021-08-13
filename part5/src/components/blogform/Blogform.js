@@ -27,6 +27,7 @@ const Blogform = ({ addNewBlog, toggleVisible }) => {
         <label>
           title
           <input
+            id="input-title"
             value={title}
             onChange={({ target }) => setTitle(target.value)}
           />
@@ -37,6 +38,7 @@ const Blogform = ({ addNewBlog, toggleVisible }) => {
         <label>
           author
           <input
+            id="input-author"
             value={author}
             onChange={({ target }) => setAuthor(target.value)}
           />
@@ -46,7 +48,11 @@ const Blogform = ({ addNewBlog, toggleVisible }) => {
       <div className="form-item">
         <label>
           url
-          <input value={url} onChange={({ target }) => setUrl(target.value)} />
+          <input
+            id="input-url"
+            value={url}
+            onChange={({ target }) => setUrl(target.value)}
+          />
         </label>
       </div>
 
