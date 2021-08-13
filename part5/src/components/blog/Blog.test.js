@@ -5,6 +5,7 @@ import Blog from './Blog'
 
 describe('<Blog />', () => {
   let component
+  let mockLikeHandler
 
   const blog = {
     id: 'id',
@@ -16,7 +17,8 @@ describe('<Blog />', () => {
   }
 
   beforeEach(() => {
-    component = render(<Blog blog={blog} />)
+    mockLikeHandler = jest.fn()
+    component = render(<Blog blog={blog} addLike={mockLikeHandler} />)
   })
 
   test('renders only title and author', () => {
@@ -36,5 +38,16 @@ describe('<Blog />', () => {
     expect(component.container).toHaveTextContent('url')
 
     expect(component.container).toHaveTextContent('13')
+  })
+
+  test('addLike gets called after button click', () => {
+    fireEvent.click(component.getByText('show'))
+
+    const likeButton = component.getByText('like')
+
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+
+    expect(mockLikeHandler.mock.calls).toHaveLength(2)
   })
 })
