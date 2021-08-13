@@ -36,6 +36,7 @@ const Blog = ({ blog, addLike, showDelete, deleteBlog }) => {
       </p>
       {detailedView ? (
         <>
+          <p>{blog.url}</p>
           <p>
             likes {blog.likes}
             <button onClick={handleLike}>like</button>
