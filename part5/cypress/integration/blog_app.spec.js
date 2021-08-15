@@ -38,6 +38,8 @@ describe('Blog app', function() {
     const title = 'Test title'
     const author = 'Test author'
     const url = 'www.fi'
+    const likes = 0
+
     beforeEach(function() {
       cy.login(username, password)
     })
@@ -51,6 +53,19 @@ describe('Blog app', function() {
       cy.get('#newblog-button-save').click()
       cy.contains('title')
       cy.contains('author')
+    })
+    
+    it('A blog can be liked', function() {
+      let blogId
+      cy.createBlog(title, author, url, likes)
+        .then(res => {
+          blogId = res.body.id         
+          cy.visit('http://localhost:3000')
+    
+          cy.get(`#blog-${blogId}-button-toggle`).click()
+          cy.get(`#blog-${blogId}-button-like`).click()
+          cy.contains(`likes ${likes + 1}`)
+        })
     })
   })
 })
