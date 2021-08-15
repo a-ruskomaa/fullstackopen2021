@@ -21,6 +21,7 @@ const Login = ({ handleLogin }) => {
           <label>
             username
             <input
+              id="login-input-username"
               type="text"
               value={username}
               name="Username"
@@ -32,6 +33,7 @@ const Login = ({ handleLogin }) => {
           <label>
             password
             <input
+              id="login-input-password"
               type="password"
               value={password}
               name="Password"
@@ -39,7 +41,7 @@ const Login = ({ handleLogin }) => {
             />
           </label>
         </div>
-        <button type="submit">login</button>
+        <button id="login-button-login" type="submit">login</button>
       </form>
     </div>
   )
