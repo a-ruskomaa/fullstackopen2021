@@ -14,8 +14,8 @@ Cypress.Commands.add('createUser', (username, name, password) => {
   })
 })
 
-Cypress.Commands.add('createBlog', ({ title, author, url, likes }) => {
-  cy.request({
+Cypress.Commands.add('createBlog', (title, author, url, likes) => {
+  return cy.request({
     url: 'http://localhost:3003/api/blogs',
     method: 'POST',
     body: { title, author, url, likes },
