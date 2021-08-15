@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import Blog from './Blog'
+import Blog from './blog/Blog'
 import blogService from '../services/blogs'
-import Blogform from './Blogform'
+import Blogform from './blogform/Blogform'
 
 const Bloglist = ({ displayNotification, user }) => {
   const [blogs, setBlogs] = useState([])
