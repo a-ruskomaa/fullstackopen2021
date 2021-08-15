@@ -51,8 +51,8 @@ describe('Blog app', function() {
       cy.get('#newblog-input-author').type(author)
       cy.get('#newblog-input-url').type(url)
       cy.get('#newblog-button-save').click()
-      cy.contains('title')
-      cy.contains('author')
+      cy.contains(title)
+      cy.contains(author)
     })
     
     it('A blog can be liked', function() {
@@ -65,6 +65,22 @@ describe('Blog app', function() {
           cy.get(`#blog-${blogId}-button-toggle`).click()
           cy.get(`#blog-${blogId}-button-like`).click()
           cy.contains(`likes ${likes + 1}`)
+        })
+    })
+        
+    it('A blog can be deleted', function() {
+      let blogId
+      cy.createBlog(title, author, url, likes)
+        .then(res => {
+          blogId = res.body.id         
+          cy.visit('http://localhost:3000')
+    
+          cy.contains(title)
+          cy.contains(author)
+          cy.get(`#blog-${blogId}-button-toggle`).click()
+          cy.get(`#blog-${blogId}-button-delete`).click()
+          cy.contains(title).should('not.exist')
+          cy.contains(author).should('not.exist')
         })
     })
   })
