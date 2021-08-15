@@ -5,7 +5,7 @@ const password = 'testpassword'
 describe('Blog app', function() {
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
-    cy.createUser({ username, name, password })
+    cy.createUser(username, name, password)
     cy.visit('http://localhost:3000')
   })
 
@@ -31,6 +31,26 @@ describe('Blog app', function() {
       cy.get('#login-input-password').type('wrong')
       cy.get('#login-button-login').click()
       cy.contains('wrong credentials')
+    })
+  })
+
+  describe('When logged in', function() {
+    const title = 'Test title'
+    const author = 'Test author'
+    const url = 'www.fi'
+    beforeEach(function() {
+      cy.login(username, password)
+    })
+
+    it('A blog can be created', function() {
+      cy.visit('http://localhost:3000')
+      cy.get('#bloglist-button-new').click()
+      cy.get('#newblog-input-title').type(title)
+      cy.get('#newblog-input-author').type(author)
+      cy.get('#newblog-input-url').type(url)
+      cy.get('#newblog-button-save').click()
+      cy.contains('title')
+      cy.contains('author')
     })
   })
 })

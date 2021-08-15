@@ -51,7 +51,7 @@ const Bloglist = ({ displayNotification, user }) => {
           toggleVisible={toggleBlogformVisible}
         />
       ) : (
-        <button onClick={toggleBlogformVisible}>Add new blog</button>
+        <button id='bloglist-button-new' onClick={toggleBlogformVisible}>Add new blog</button>
       )}
       {blogs
         .slice()
