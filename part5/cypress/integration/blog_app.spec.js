@@ -56,10 +56,9 @@ describe('Blog app', function() {
     })
     
     it('A blog can be liked', function() {
-      let blogId
       cy.createBlog(title, author, url, likes)
         .then(res => {
-          blogId = res.body.id         
+          const blogId = res.body.id         
           cy.visit('http://localhost:3000')
     
           cy.get(`#blog-${blogId}-button-toggle`).click()
@@ -69,10 +68,9 @@ describe('Blog app', function() {
     })
         
     it('A blog can be deleted', function() {
-      let blogId
       cy.createBlog(title, author, url, likes)
         .then(res => {
-          blogId = res.body.id         
+          const blogId = res.body.id         
           cy.visit('http://localhost:3000')
     
           cy.contains(title)
@@ -82,6 +80,57 @@ describe('Blog app', function() {
           cy.contains(title).should('not.exist')
           cy.contains(author).should('not.exist')
         })
+    })
+
+    it('Blogs are sorted by likes', function() {
+      // Add initial blogs
+      cy.createBlog('title 1', 'author 1', url, 0)
+      cy.createBlog('title 2', 'author 2', url, 2)
+      cy.createBlog('title 3', 'author 3', url, 3)
+
+      cy.visit('http://localhost:3000')
+      cy.get('.blog-item')
+        .then(items => {
+          // Verify initial order
+          expect(items[0]).to.contain('title 3')
+          expect(items[1]).to.contain('title 2')
+          expect(items[2]).to.contain('title 1')
+        })
+      cy.createBlog('title 4', 'author 1', url, 1).then(
+        res => {
+          const blogId = res.body.id
+          cy.visit('http://localhost:3000')
+          
+          cy.get('.blog-item')
+            .then(items => {
+              // Verify order after addition
+              expect(items[0]).to.contain('title 3')
+              expect(items[1]).to.contain('title 2')
+              expect(items[2]).to.contain('title 4')
+              expect(items[3]).to.contain('title 1')
+          })
+          
+          // Like 4 times
+          cy.get(`#blog-${blogId}-button-toggle`).click()
+          cy.get(`#blog-${blogId}-button-like`).click()
+          cy.contains('title 4 author 1').siblings().contains('likes 2')
+          cy.get(`#blog-${blogId}-button-like`).click()
+          cy.contains('title 4 author 1').siblings().contains('likes 3')
+          cy.get(`#blog-${blogId}-button-like`).click()
+          cy.contains('title 4 author 1').siblings().contains('likes 4')
+          cy.get(`#blog-${blogId}-button-like`).click()
+          cy.contains('title 4 author 1').siblings().contains('likes 5')
+
+          cy.get('.blog-item')
+            .then(items => {
+              // Verify order after likes
+              expect(items[0]).to.contain('title 4')
+              expect(items[1]).to.contain('title 3')
+              expect(items[2]).to.contain('title 2')
+              expect(items[3]).to.contain('title 1')
+          })
+        }
+      )
     })
   })
 })
