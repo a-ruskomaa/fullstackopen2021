@@ -38,9 +38,11 @@ const reducer = (state = initialState, action) => {
   console.log('action', action)
   switch (action.type) {
     case 'VOTE':
-      return state.map((item) =>
-        item.id === action.data.id ? { ...item, votes: item.votes + 1 } : item
-      )
+      return state
+        .map((item) =>
+          item.id === action.data.id ? { ...item, votes: item.votes + 1 } : item
+        )
+        .sort((a, b) => b.votes - a.votes)
     case 'INSERT':
       return state.concat(asObject(action.data.anecdote))
     default:
