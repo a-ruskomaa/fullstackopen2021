@@ -5,9 +5,13 @@ export const showNotification = (notification) => {
   }
 }
 
-const initialState = {
-  notification: 'notification',
+export const hideNotification = () => {
+  return {
+    type: 'HIDE_NOTIFICATION',
+  }
 }
+
+const initialState = null
 
 const notificationReducer = (state = initialState, action) => {
   console.log('state now: ', state)
@@ -15,6 +19,8 @@ const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SHOW_NOTIFICATION':
       return action.data.notification
+    case 'HIDE_NOTIFICATION':
+      return null
     default:
       return state
   }

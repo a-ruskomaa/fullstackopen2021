@@ -1,12 +1,18 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { insertAnecdote } from '../reducers/anecdoteReducer'
+import {
+  hideNotification,
+  showNotification,
+} from '../reducers/notificationReducer'
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
 
   const insert = (anecdote) => {
     dispatch(insertAnecdote(anecdote))
+    dispatch(showNotification(`added: ${anecdote}`))
+    setTimeout(() => dispatch(hideNotification()), 5000)
   }
 
   const handleSubmit = (e) => {
