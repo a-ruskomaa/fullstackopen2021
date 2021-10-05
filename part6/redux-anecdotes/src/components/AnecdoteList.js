@@ -5,9 +5,13 @@ import {
   hideNotification,
   showNotification,
 } from '../reducers/notificationReducer'
+import Filter from './Filter'
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector((state) => state.anecdotes)
+  const filter = useSelector((state) => state.filter)
+  const anecdotes = useSelector((state) =>
+    state.anecdotes.filter((anecdote) => anecdote.content.includes(filter))
+  )
   const dispatch = useDispatch()
 
   const vote = (anecdote) => {
@@ -17,6 +21,7 @@ const AnecdoteList = () => {
   }
   return (
     <div>
+      <Filter />
       <div>
         {anecdotes.map((anecdote) => (
           <div key={anecdote.id}>
