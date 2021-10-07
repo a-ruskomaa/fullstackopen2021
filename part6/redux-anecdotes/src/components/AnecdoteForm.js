@@ -5,14 +5,17 @@ import {
   hideNotification,
   showNotification,
 } from '../reducers/notificationReducer'
+import anecdoteService from '../services/anecdoteService'
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
 
-  const insert = (anecdote) => {
-    dispatch(insertAnecdote(anecdote))
-    dispatch(showNotification(`added: ${anecdote}`))
-    setTimeout(() => dispatch(hideNotification()), 5000)
+  const insert = (content) => {
+    anecdoteService.createNew(content).then((anecdote) => {
+      dispatch(insertAnecdote(anecdote))
+      dispatch(showNotification(`added: ${anecdote}`))
+      setTimeout(() => dispatch(hideNotification()), 5000)
+    })
   }
 
   const handleSubmit = (e) => {

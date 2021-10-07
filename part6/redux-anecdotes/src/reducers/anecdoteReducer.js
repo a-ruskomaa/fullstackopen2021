@@ -1,13 +1,3 @@
-const getId = () => (100000 * Math.random()).toFixed(0)
-
-const asObject = (anecdote) => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0,
-  }
-}
-
 export const voteAnecdote = (id) => {
   return {
     type: 'VOTE',
@@ -42,7 +32,7 @@ const anecdoteReducer = (state = initialState, action) => {
         )
         .sort((a, b) => b.votes - a.votes)
     case 'INSERT':
-      return state.concat(asObject(action.data.anecdote))
+      return state.concat(action.data.anecdote)
     case 'INIT':
       return action.data
     default:
