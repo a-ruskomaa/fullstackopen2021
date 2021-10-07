@@ -2,8 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 const Notification = () => {
-  const notification = useSelector((store) => store.notification)
-  console.log(notification)
+  const notification = useSelector((store) => store.notification.notification)
   const style = {
     border: 'solid',
     padding: 10,

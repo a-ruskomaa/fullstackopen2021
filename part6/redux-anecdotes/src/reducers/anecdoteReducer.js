@@ -33,8 +33,6 @@ export const initializeAnecdotes = () => {
 const initialState = []
 
 const anecdoteReducer = (state = initialState, action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
   switch (action.type) {
     case 'UPDATE':
       const updatedAnecdote = action.data.updatedAnecdote
