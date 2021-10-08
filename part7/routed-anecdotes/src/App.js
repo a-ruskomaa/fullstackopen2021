@@ -20,8 +20,16 @@ const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => <li key={anecdote.id} ><Link to={`anecdotes/${anecdote.id}`}>{anecdote.content}</Link></li>)}
     </ul>
+  </div>
+)
+
+const AnecdoteDisplay = ({anecdote}) => (
+  <div>
+    <h2>{anecdote.content}</h2>
+    <p>Has {anecdote.votes} votes</p>
+    <p>for more info see <a href={anecdote.info}>{anecdote.info}</a></p>
   </div>
 )
 
@@ -136,6 +144,10 @@ const App = () => {
         <Route path="/create">
           <CreateNew addNew={addNew} />
         </Route>
+        <Route path="/anecdotes/:id" render={({match}) => (
+          <AnecdoteDisplay anecdote={anecdoteById(match.params.id)}/>
+            )}
+          />
         <Route path="/">
           <AnecdoteList anecdotes={anecdotes} />
         </Route>
