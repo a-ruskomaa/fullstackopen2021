@@ -4,7 +4,7 @@ import {
 import About from './components/About'
 import AnecdoteDisplay from './components/AnecdoteDisplay'
 import AnecdoteList from './components/AnecdoteList'
-import CreateNew from './components/CreateNew'
+import AnecdoteForm from './components/AnecdoteForm'
 import Footer from './components/Footer'
 import Menu from './components/Menu'
 import Notification from './components/Notification'
@@ -64,7 +64,7 @@ const App = () => {
           <About />
         </Route>
         <Route path="/create">
-          <CreateNew addNew={addNew} showNotification={showNotification} />
+          <AnecdoteForm addNew={addNew} showNotification={showNotification} />
         </Route>
         <Route path="/anecdotes/:id" render={({match}) => (
           <AnecdoteDisplay anecdote={anecdoteById(match.params.id)}/>
