@@ -3,9 +3,9 @@ import { useHistory } from "react-router-dom";
 import useField from '../hooks/useField';
 
 const AnecdoteForm = ({ addNew, showNotification }) => {
-  const content = useField('text')
-  const author = useField('text')
-  const info = useField('text')
+  const { reset: resetContent, ...contentField } = useField('text')
+  const { reset: resetAuthor, ...authorField } = useField('text')
+  const { reset: resetInfo, ...infoField } = useField('text')
 
   const history = useHistory();
 
@@ -13,14 +13,21 @@ const AnecdoteForm = ({ addNew, showNotification }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     addNew({
-      content: content.value,
-      author: author.value,
-      info: info.value,
+      content: contentField.value,
+      author: authorField.value,
+      info: infoField.value,
       votes: 0
     });
-    showNotification(`a new anecdote: ${content.value}`, 10);
+    showNotification(`a new anecdote: ${contentField.value}`, 10);
     history.push('/');
   };
+
+  const handleReset = (e) => {
+    e.preventDefault();
+    resetContent()
+    resetAuthor()
+    resetInfo()
+  }
 
   return (
     <div>
@@ -28,17 +35,18 @@ const AnecdoteForm = ({ addNew, showNotification }) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input {...content} />
+          <input {...contentField} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...authorField} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...infoField} />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
+        <button onClick={handleReset}>reset</button>
       </form>
     </div>
   );
