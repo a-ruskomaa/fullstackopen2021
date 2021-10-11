@@ -1,0 +1,39 @@
+.notification {
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.notification.error {
+  color: red;
+}
+
+.notification.info {
+  color: green;
+}
+
+form {
+  margin: 20px 0;
+}
+
+.form-item {
+  margin: 5px 5px;
+}
+
+.form-item label input {
+  margin-left: 10px;
+}
+
+button {
+  margin: 2px 5px;
+  padding: 2px 5px;
+}
+
+.blog-item {
+  padding: 0px 5px;
+  border: 1px solid rgb(170, 170, 170);
+  margin: 5px 5px;
+}
