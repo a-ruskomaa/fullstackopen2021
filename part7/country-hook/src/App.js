@@ -17,8 +17,32 @@ const useField = (type) => {
 
 const useCountry = (name) => {
   const [country, setCountry] = useState(null)
+  const apiUrl = 'https://restcountries.com/v3.1/name'
 
-  useEffect(() => {})
+  useEffect(() => {
+    if (name == '') {
+      return null
+    }
+
+    axios.get(`${apiUrl}/${name}`, {
+      params: {
+        fullName: true
+      }
+    }).then(res => {
+      const country = res.data[0]
+      setCountry({
+        found: true,
+        data: { // used API v3, didn't bother to refactor 
+          name: country.name.common,
+          capital: country.capital[0],
+          population: country.population,
+          flag: country.flags.png
+        }
+      })
+    }).catch(err => {
+        setCountry({found: false})
+      })
+  }, [name])
 
   return country
 }
