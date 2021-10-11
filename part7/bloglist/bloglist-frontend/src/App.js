@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Bloglist from './components/Bloglist'
 import Notification from './components/Notification'
 import Login from './components/Login'
 import blogService from './services/blogs'
-import loginService from './services/login'
-import {
-  showNotification
-} from './reducers/notificationReducer'
 import { getAllBlogs } from './reducers/blogReducer'
 import './App.css'
+import { login, logout } from './reducers/userReducer'
 
 const App = () => {
   const dispatch = useDispatch()
-  const [user, setUser] = useState(loginService.getUserFromLocalStorage())
+  const user = useSelector(state => state.user.user)
 
   useEffect(() => {
     blogService.setToken(user ? user.token : null)
@@ -24,18 +21,11 @@ const App = () => {
   }, [dispatch])
 
   const handleLogin = async (userCredentials) => {
-    try {
-      const user = await loginService.login(userCredentials)
-      setUser(user)
-    } catch (exception) {
-      dispatch(showNotification('wrong credentials', 'error'))
-    }
+    dispatch(login(userCredentials))
   }
 
   const handleLogout = () => {
-    loginService.logout()
-    setUser(null)
-    dispatch(showNotification('logged out', 'info'))
+    dispatch(logout())
   }
 
   return (
