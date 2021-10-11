@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import Blog from './blog/Blog'
 import blogService from '../services/blogs'
 import Blogform from './blogform/Blogform'
+import {
+  showNotification
+} from '../reducers/notificationReducer'
 
-const Bloglist = ({ displayNotification, user }) => {
+const Bloglist = ({ user }) => {
+  const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
   const [blogformVisible, setBlogformVisible] = useState(false)
 
@@ -15,7 +20,7 @@ const Bloglist = ({ displayNotification, user }) => {
     try {
       const savedBlog = await blogService.create(blog)
       setBlogs(blogs.concat(savedBlog))
-      displayNotification('new blog added', 'info')
+      dispatch(showNotification('new blog added', 'info'))
       toggleBlogformVisible()
       return true
     } catch (error) {
