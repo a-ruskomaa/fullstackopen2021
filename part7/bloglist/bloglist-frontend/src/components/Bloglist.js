@@ -1,25 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Blog from './blog/Blog'
-import blogService from '../services/blogs'
 import Blogform from './blogform/Blogform'
 import {
   showNotification
 } from '../reducers/notificationReducer'
+import { createBlog, updateBlog, removeBlog } from '../reducers/blogReducer'
 
 const Bloglist = ({ user }) => {
   const dispatch = useDispatch()
-  const [blogs, setBlogs] = useState([])
+  const blogs = useSelector((store) => store.blogs)
   const [blogformVisible, setBlogformVisible] = useState(false)
-
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
-  }, [])
 
   const addNewBlog = async (blog) => {
     try {
-      const savedBlog = await blogService.create(blog)
-      setBlogs(blogs.concat(savedBlog))
+      dispatch(createBlog(blog))
       dispatch(showNotification('new blog added', 'info'))
       toggleBlogformVisible()
       return true
@@ -30,17 +25,11 @@ const Bloglist = ({ user }) => {
   }
 
   const addLike = async (blog) => {
-    const savedBlog = await blogService.update(blog)
-    const updatedBlogs = blogs.map((blog) =>
-      blog.id === savedBlog.id ? savedBlog : blog
-    )
-    setBlogs(updatedBlogs)
+    dispatch(updateBlog(blog))
   }
 
   const deleteBlog = async (id) => {
-    if (await blogService.delete(id)) {
-      setBlogs(blogs.filter((blog) => blog.id !== id))
-    }
+    dispatch(removeBlog(id))
   }
 
   const toggleBlogformVisible = () => {

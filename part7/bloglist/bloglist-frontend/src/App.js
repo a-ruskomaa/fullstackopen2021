@@ -8,7 +8,7 @@ import loginService from './services/login'
 import {
   showNotification
 } from './reducers/notificationReducer'
-
+import { getAllBlogs } from './reducers/blogReducer'
 import './App.css'
 
 const App = () => {
@@ -18,6 +18,10 @@ const App = () => {
   useEffect(() => {
     blogService.setToken(user ? user.token : null)
   }, [user])
+
+  useEffect(() => {
+    dispatch(getAllBlogs())
+  }, [dispatch])
 
   const handleLogin = async (userCredentials) => {
     try {
