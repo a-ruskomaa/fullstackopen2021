@@ -2,7 +2,7 @@ import React from 'react'
 
 const Userdisplay = ({ user }) => {
 
-  return (
+  return !user ? null : (
     <div>
       <h2>{user.name}</h2>
 
@@ -11,7 +11,7 @@ const Userdisplay = ({ user }) => {
         {user.blogs.map(
           blog => (
             <li key={blog.id}>
-              blog.
+              {blog.title}
             </li>
           )
         )}
