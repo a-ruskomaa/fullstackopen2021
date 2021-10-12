@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import Bloglist from './components/blogs/Bloglist'
 import Notification from './components/Notification'
 import Login from './components/Login'
-import Header from './components/Header'
+import Navbar from './components/Navbar'
 import blogService from './services/blogs'
 import { getAllBlogs } from './reducers/blogReducer'
 import './App.css'
@@ -43,7 +43,7 @@ const App = () => {
 
       <Notification />
       <AuthGuard user={user} redirect={false}>
-        <Header handleLogout={handleLogout} user={user} />
+        <Navbar handleLogout={handleLogout} user={user} />
       </AuthGuard>
 
       <Switch>
