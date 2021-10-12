@@ -6,11 +6,13 @@ import Login from './components/Login'
 import blogService from './services/blogs'
 import { getAllBlogs } from './reducers/blogReducer'
 import './App.css'
-import { login, logout } from './reducers/userReducer'
+import { login, logout } from './reducers/loginReducer'
+import Userlist from './components/Userlist'
+import { getAllUsers } from './reducers/userReducer'
 
 const App = () => {
   const dispatch = useDispatch()
-  const user = useSelector(state => state.user.user)
+  const user = useSelector(state => state.login.user)
 
   useEffect(() => {
     blogService.setToken(user ? user.token : null)
@@ -18,6 +20,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getAllBlogs())
+    dispatch(getAllUsers())
   }, [dispatch])
 
   const handleLogin = async (userCredentials) => {
@@ -43,6 +46,7 @@ const App = () => {
             <button onClick={handleLogout}>logout</button>
           </div>
           <Bloglist user={user} />
+          <Userlist />
         </>
       )}
     </>
