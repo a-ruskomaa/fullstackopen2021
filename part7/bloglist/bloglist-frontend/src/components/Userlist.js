@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 
 const Userlist = () => {
   const users = useSelector(state => state.users)
-  console.log(users)
 
   return (
     <div>
@@ -18,7 +17,7 @@ const Userlist = () => {
         </thead>
         <tbody>
           {users?.map(user => (
-            <tr>
+            <tr key={user.username}>
               <td>{user.name}</td>
               <td>{user.blogs.length}</td>
             </tr>
