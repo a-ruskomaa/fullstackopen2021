@@ -4,8 +4,8 @@ import Blog from './blog/Blog'
 import Blogform from './blogform/Blogform'
 import {
   showNotification
-} from '../reducers/notificationReducer'
-import { createBlog, updateBlog, removeBlog } from '../reducers/blogReducer'
+} from '../../reducers/notificationReducer'
+import { createBlog, updateBlog, removeBlog } from '../../reducers/blogReducer'
 
 const Bloglist = ({ user }) => {
   const dispatch = useDispatch()
