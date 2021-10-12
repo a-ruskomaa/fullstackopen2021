@@ -1,8 +1,8 @@
 import { Redirect } from 'react-router-dom'
 
-const AuthGuard = ({ user, children }) => {
+const AuthGuard = ({ user, redirect, children }) => {
   if (!user) {
-    return (<Redirect to="/login"></Redirect>)
+    return redirect ? (<Redirect to="/login"></Redirect>) : null
   }
 
   return children
