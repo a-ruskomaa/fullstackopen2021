@@ -54,25 +54,25 @@ describe('Blog app', function() {
       cy.contains(title)
       cy.contains(author)
     })
-    
+
     it('A blog can be liked', function() {
       cy.createBlog(title, author, url, likes)
         .then(res => {
-          const blogId = res.body.id         
+          const blogId = res.body.id
           cy.visit('http://localhost:3000')
-    
+
           cy.get(`#blog-${blogId}-button-toggle`).click()
           cy.get(`#blog-${blogId}-button-like`).click()
           cy.contains(`likes ${likes + 1}`)
         })
     })
-        
+
     it('A blog can be deleted', function() {
       cy.createBlog(title, author, url, likes)
         .then(res => {
-          const blogId = res.body.id         
+          const blogId = res.body.id
           cy.visit('http://localhost:3000')
-    
+
           cy.contains(title)
           cy.contains(author)
           cy.get(`#blog-${blogId}-button-toggle`).click()
@@ -100,7 +100,7 @@ describe('Blog app', function() {
         res => {
           const blogId = res.body.id
           cy.visit('http://localhost:3000')
-          
+
           cy.get('.blog-item')
             .then(items => {
               // Verify order after addition
@@ -108,8 +108,8 @@ describe('Blog app', function() {
               expect(items[1]).to.contain('title 2')
               expect(items[2]).to.contain('title 4')
               expect(items[3]).to.contain('title 1')
-          })
-          
+            })
+
           // Like 4 times
           cy.get(`#blog-${blogId}-button-toggle`).click()
           cy.get(`#blog-${blogId}-button-like`).click()
@@ -128,7 +128,7 @@ describe('Blog app', function() {
               expect(items[1]).to.contain('title 3')
               expect(items[2]).to.contain('title 2')
               expect(items[3]).to.contain('title 1')
-          })
+            })
         }
       )
     })
