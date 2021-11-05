@@ -1,7 +1,9 @@
 import express, { Response } from 'express';
 import calculateBmi from './bmiCalculator';
+import calculateExercises from './exerciseCalculator';
 
 const app = express();
+app.use(express.json());
 
 class ArgumentError extends Error { }
 
@@ -32,7 +34,30 @@ app.get('/bmi', (req, res) => {
     } catch (e) {
         createErrorResponse(e as Error, res);
     }
+});
 
+app.post('/exercises', (req, res) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const { daily_exercises: dailyExercises, target } = req.body;
+
+    try {
+        if (dailyExercises === undefined || target === undefined) {
+            throw new ArgumentError('parameters missing');
+        }
+
+        if (typeof target !== 'number' ||
+            typeof dailyExercises !== 'object' ||
+            !Array.isArray(dailyExercises) ||
+            (dailyExercises as Array<unknown>).some(el => typeof el !== 'number')) {
+            throw new ArgumentError('malformatted parameters');
+        }
+
+        const exerciseReport = calculateExercises(dailyExercises as Array<number>, target);
+
+        res.send(exerciseReport);
+    } catch (e) {
+        createErrorResponse(e as Error, res);
+    }
 });
 
 const PORT = 3003;
