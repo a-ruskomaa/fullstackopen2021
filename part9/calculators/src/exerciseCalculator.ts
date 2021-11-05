@@ -20,31 +20,31 @@ const getRating = (average: number, target: number): ExerciseRating => {
         return {
             rating: 1,
             ratingDescription: 'bad'
-        }
+        };
     } else if (ratio < 1) {
         return {
             rating: 2,
             ratingDescription: 'not too bad but could be better'
-        }
+        };
     } else if (ratio < 2) {
         return {
             rating: 3,
             ratingDescription: 'ok'
-        }
+        };
     } else if (ratio < 3) {
         return {
             rating: 4,
             ratingDescription: 'good'
-        }
+        };
     } else {
         return {
             rating: 5,
             ratingDescription: 'wow'
-        }
+        };
     }
-}
+};
 
-const calculateExercises = (hours: Array<number>, targetAvg: number = 2): ExerciseReport => {
+const calculateExercises = (hours: Array<number>, targetAvg = 2): ExerciseReport => {
     const periodLength = hours.length;
     const trainingDays = hours.reduce((acc, val) => val > 0 ? acc + 1 : acc, 0);
     const target = targetAvg;
@@ -60,7 +60,7 @@ const calculateExercises = (hours: Array<number>, targetAvg: number = 2): Exerci
         ratingDescription,
         target,
         average,
-    }
-}
+    };
+};
 
 export default calculateExercises;

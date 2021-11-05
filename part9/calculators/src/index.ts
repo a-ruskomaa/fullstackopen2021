@@ -3,7 +3,7 @@ import calculateBmi from './bmiCalculator';
 
 const app = express();
 
-class ArgumentError extends Error { };
+class ArgumentError extends Error { }
 
 app.get('/hello', (_req, res) => {
     res.send('Hello Full Stack!');
@@ -23,14 +23,14 @@ app.get('/bmi', (req, res) => {
             throw new ArgumentError('malformatted parameters');
         }
 
-        const bmi = calculateBmi(heightNum, weightNum)
+        const bmi = calculateBmi(heightNum, weightNum);
         res.send({
             weight,
             height,
             bmi
         });
     } catch (e) {
-        createErrorResponse(e, res)
+        createErrorResponse(e as Error, res);
     }
 
 });
@@ -43,8 +43,8 @@ const createErrorResponse = (e: Error, res: Response): Response => {
     } else {
         res.status(500);
     }
-    return res.json({ error: e.message })
-}
+    return res.json({ error: e.message });
+};
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
