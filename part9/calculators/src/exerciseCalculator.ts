@@ -63,4 +63,4 @@ const calculateExercises = (hours: Array<number>, targetAvg: number = 2): Exerci
     }
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1]));
+export default calculateExercises;

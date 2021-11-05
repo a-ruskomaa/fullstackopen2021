@@ -3,7 +3,7 @@ const calculateBmi = (height: number, weight: number): string => {
         throw new Error('Height can not be zero')
     }
     const heightInMeters = height / 100;
-    const bmi = weight / heightInMeters;
+    const bmi = weight / (heightInMeters * heightInMeters);
 
     if (bmi < 18.5) {
         return 'Underweight (unhealthy weight)';
@@ -14,4 +14,4 @@ const calculateBmi = (height: number, weight: number): string => {
     }
 }
 
-console.log(calculateBmi(180, 74))
+export default calculateBmi;
