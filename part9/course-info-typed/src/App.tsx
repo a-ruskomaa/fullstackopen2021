@@ -1,11 +1,13 @@
 import React from 'react';
 
-const Header = ({ courseName }) => {
+interface CoursePart { name: string, exerciseCount: number}
+
+const Header = ({ courseName }: {courseName: string}) => {
 
   return (<h1>{courseName}</h1>);
 }
 
-const Content = ({ courseParts }) => {
+const Content = ({ courseParts }: {courseParts: Array<CoursePart>}) => {
   return (
     <>
       <p>
@@ -20,7 +22,7 @@ const Content = ({ courseParts }) => {
     </>);
 }
 
-const Total = ({ courseParts }) => {
+const Total = ({ courseParts }: {courseParts: Array<CoursePart>}) => {
   return (
     <p>
       Number of exercises{" "}
