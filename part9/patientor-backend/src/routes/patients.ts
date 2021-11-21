@@ -8,8 +8,7 @@ router.get('/', (_req, res) => {
 });
 
 router.post('/', (_req, res) => {
-  const patient = _req.body;
-  res.send(patientsService.addPatient(patient));
+  res.send(patientsService.addPatient(_req.body));
 });
 
 

@@ -1,14 +1,20 @@
 import patientsData from '../../data/patients.json';
-import { Patient, PatientNoSensitive } from '../types/types';
+import { NewPatient, Patient, PatientNoSensitive } from '../types/types';
 import { v1 as uuid } from 'uuid';
+import { toPatient } from '../utils/utils';
+
+const patientsDataTyped = patientsData.map(pt => toPatient(pt));
 
 const getPatients = (): Array<PatientNoSensitive> => {
-  return patientsData.map(({ ssn, ...rest }) => ({ ...rest }) as PatientNoSensitive);
+  return patientsDataTyped.map(({ ssn, ...rest }) => ({ ...rest }) as PatientNoSensitive);
 };
 
-const addPatient = (patient: Patient): Patient => {
-  patient.id = uuid();
-  patientsData.push(patient);
+const addPatient = (newPatient: NewPatient): Patient => {
+  const patient = toPatient({
+    id: uuid(),
+    ...newPatient
+  });
+  patientsDataTyped.push(patient);
   return patient;
 }
 
