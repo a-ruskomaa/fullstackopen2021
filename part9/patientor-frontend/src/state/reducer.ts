@@ -1,34 +1,46 @@
 import { State } from "./state";
-import { Patient } from "../types";
+import { MinimalPatient, Patient } from "../types";
 
 export type Action =
   | {
-      type: "SET_PATIENT_LIST";
-      payload: Patient[];
-    }
+    type: "SET_PATIENT_LIST";
+    payload: MinimalPatient[];
+  }
   | {
-      type: "ADD_PATIENT";
-      payload: Patient;
-    };
+    type: "ADD_PATIENT";
+    payload: MinimalPatient;
+  }
+  | {
+    type: "ADD_PATIENT_DETAILS";
+    payload: Patient;
+  };
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "SET_PATIENT_LIST":
       return {
         ...state,
-        patients: {
+        patientList: {
           ...action.payload.reduce(
             (memo, patient) => ({ ...memo, [patient.id]: patient }),
             {}
           ),
-          ...state.patients
+          ...state.patientList
         }
       };
     case "ADD_PATIENT":
       return {
         ...state,
-        patients: {
-          ...state.patients,
+        patientList: {
+          ...state.patientList,
+          [action.payload.id]: action.payload
+        }
+      };
+    case "ADD_PATIENT_DETAILS":
+      return {
+        ...state,
+        patientDetails: {
+          ...state.patientDetails,
           [action.payload.id]: action.payload
         }
       };

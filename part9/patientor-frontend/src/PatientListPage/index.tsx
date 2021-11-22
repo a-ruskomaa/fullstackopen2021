@@ -4,13 +4,14 @@ import { Container, Table, Button } from "semantic-ui-react";
 
 import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
 import AddPatientModal from "../AddPatientModal";
-import { Patient } from "../types";
+import { MinimalPatient, Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";
 import { useStateValue } from "../state";
+import { Link } from "react-router-dom";
 
 const PatientListPage = () => {
-  const [{ patients }, dispatch] = useStateValue();
+  const [{ patientList: patients }, dispatch] = useStateValue();
 
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | undefined>();
@@ -51,9 +52,11 @@ const PatientListPage = () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {Object.values(patients).map((patient: Patient) => (
+          {Object.values(patients).map((patient: MinimalPatient) => (
             <Table.Row key={patient.id}>
-              <Table.Cell>{patient.name}</Table.Cell>
+              <Table.Cell>
+                <Link to={`patients/${patient.id}`}>{patient.name}</Link>
+              </Table.Cell>
               <Table.Cell>{patient.gender}</Table.Cell>
               <Table.Cell>{patient.occupation}</Table.Cell>
               <Table.Cell>
