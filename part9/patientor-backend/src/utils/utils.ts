@@ -27,6 +27,7 @@ export const toNewPatient = (data: NewPatientFields): NewPatient => {
 export const toPatient = (data: PatientFields): Patient => {
   const patient = {
     id: parseId(data.id),
+    entries: [],
     ...toNewPatient(data),
   }
 
