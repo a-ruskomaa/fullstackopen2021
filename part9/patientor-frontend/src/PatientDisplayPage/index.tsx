@@ -4,7 +4,7 @@ import { Container, Icon, SemanticICONS } from "semantic-ui-react";
 
 import { Gender, Patient } from "../types";
 import { apiBaseUrl } from "../constants";
-import { useStateValue } from "../state";
+import { addPatientDetails, useStateValue } from "../state";
 import { useParams } from "react-router-dom";
 
 const PatientDisplayPage = () => {
@@ -19,7 +19,7 @@ const PatientDisplayPage = () => {
       `${apiBaseUrl}/patients/${id}`
     ).then(res => res.data)
       .then(pt => {
-        dispatch({ type: "ADD_PATIENT_DETAILS", payload: pt });
+        dispatch(addPatientDetails(pt));
         patient = pt;
       }).catch(e => {
         console.error(e.response?.data || 'Unknown Error');
