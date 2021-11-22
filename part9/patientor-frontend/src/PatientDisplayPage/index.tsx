@@ -1,12 +1,14 @@
 import React from "react";
 import axios from "axios";
-import { Container } from "semantic-ui-react";
+import { Container, Icon, SemanticICONS } from "semantic-ui-react";
 
-import { Patient } from "../types";
+import { Gender, Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import { useStateValue } from "../state";
+import { useParams } from "react-router-dom";
 
-const PatientDisplayPage = ({ id }: { id: string }) => {
+const PatientDisplayPage = () => {
+  const { id } = useParams<{ id: string }>();
   const [{ patientDetails: patients }, dispatch] = useStateValue();
   const [, setError] = React.useState<string | undefined>();
 
@@ -26,13 +28,29 @@ const PatientDisplayPage = ({ id }: { id: string }) => {
   }
 
   return (
-    <div className="App">
-      <Container textAlign="left">
-        <h3>{patient?.name}</h3>
-      </Container>
-
-    </div>
+    patient ?
+      <div className="App">
+        <Container>
+          <h3>{patient.name} <Icon name={resolveGenderIconName(patient.gender)} /></h3>
+        </Container>
+        <Container>
+          <div>ssn: {patient.ssn} </div>
+          <div>occupation: {patient.occupation} </div>
+        </Container>
+      </div>
+      : null
   );
+};
+
+const resolveGenderIconName = (gender: Gender): SemanticICONS => {
+  switch (gender) {
+    case Gender.Male:
+      return 'mars';
+    case Gender.Female:
+      return 'venus';
+    default:
+      return 'genderless';
+  }
 };
 
 export default PatientDisplayPage;

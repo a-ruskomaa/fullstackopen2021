@@ -38,10 +38,9 @@ const App = () => {
           </Button>
           <Divider hidden />
           <Switch>
-            <Route path="/patients/:id" render={({ match }) => (
-              <PatientDisplayPage id={match.params.id} />
-            )}
-            />
+            <Route path="/patients/:id">
+              <PatientDisplayPage />
+            </Route>
             <Route path="/patients">
               <PatientListPage />
             </Route>
