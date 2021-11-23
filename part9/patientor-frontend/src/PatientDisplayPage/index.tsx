@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { Container, Icon, SemanticICONS } from "semantic-ui-react";
 
-import { Gender, Patient } from "../types";
+import { Entry, Gender, Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import { addPatientDetails, useStateValue } from "../state";
 import { useParams } from "react-router-dom";
@@ -33,9 +33,13 @@ const PatientDisplayPage = () => {
         <Container>
           <h3>{patient.name} <Icon name={resolveGenderIconName(patient.gender)} /></h3>
         </Container>
-        <Container>
+        <Container style={{ marginTop: '20px'}}>
           <div>ssn: {patient.ssn} </div>
           <div>occupation: {patient.occupation} </div>
+        </Container>
+        <Container style={{ marginTop: '20px'}}>
+          <h4>Entries</h4>
+          {patient.entries?.map(entry => <EntryComponent key={entry.id} entry={entry} />)}
         </Container>
       </div>
       : null
@@ -51,6 +55,21 @@ const resolveGenderIconName = (gender: Gender): SemanticICONS => {
     default:
       return 'genderless';
   }
+};
+
+const EntryComponent = ({ entry }: {entry: Entry}) => {
+  return (
+    <>
+    <Container>
+      {entry.date}: <span style={{fontStyle: "italic"}}>{entry.description}</span>
+    </Container>
+    <Container>
+      <ul>
+        {entry.diagnosisCodes?.map(code => (<li key={code}>{code}</li>))}
+      </ul>
+    </Container>
+    </>
+  );
 };
 
 export default PatientDisplayPage;
