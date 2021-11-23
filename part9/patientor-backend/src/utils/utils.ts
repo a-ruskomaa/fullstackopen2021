@@ -12,35 +12,40 @@ type PatientFields = {
 
 type NewPatientFields = Omit<PatientFields, 'id'>;
 
-export const toNewPatient = (data: NewPatientFields): NewPatient => {
+export const toNewPatient = ({ 
+        name,
+        dateOfBirth,
+        ssn,
+        gender,
+        occupation }: NewPatientFields): NewPatient => {
   const newPatient: NewPatient = {
-    name: parseString(data.name, 'name'),
-    dateOfBirth: parseDateOfBirth(data.dateOfBirth),
-    ssn: parseString(data.ssn, 'ssn'),
-    gender: parseGender(data.gender),
-    occupation: parseString(data.occupation, 'occupation'),
+    name: parseString(name, 'name'),
+    dateOfBirth: parseDateOfBirth(dateOfBirth),
+    ssn: parseString(ssn, 'ssn'),
+    gender: parseGender(gender),
+    occupation: parseString(occupation, 'occupation'),
   };
 
   return newPatient;
 };
 
-export const toPatient = (data: PatientFields): Patient => {
+export const toPatient = ({ id, ...rest }: PatientFields): Patient => {
   const patient = {
-    id: parseId(data.id),
+    id: parseId(id),
     entries: [],
-    ...toNewPatient(data),
-  }
+    ...toNewPatient({...rest}),
+  };
 
   return patient;
-}
+};
 
-const isGender = (text: any): text is Gender => {
-  return Object.values(Gender).includes(text);
-}
+const isGender = (text: unknown): text is Gender => {
+  return Object.values(Gender).includes(text as Gender);
+};
 
 const isString = (text: unknown): text is string => {
   return typeof text === 'string';
-}
+};
 
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
@@ -48,8 +53,7 @@ const isDate = (date: string): boolean => {
 
 const isUuid = (val: string): boolean => {
   return Boolean(parseUuid(val));
-}
-
+};
 
 const parseId = (text: unknown): string => {
   if (!text || !isString(text) || !isUuid(text)) {
@@ -64,7 +68,7 @@ const parseString = (text: unknown, name: string): string => {
   }
 
   return text;
-}
+};
 
 const parseDateOfBirth = (date: unknown): string => {
   if (!date || !isString(date) || !isDate(date)) {
@@ -82,4 +86,4 @@ const parseGender = (gender: unknown): Gender => {
 
 export default {
   toNewPatient
-}
+};
