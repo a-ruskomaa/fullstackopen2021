@@ -33,13 +33,14 @@ const PatientDisplayPage = () => {
         <Container>
           <h3>{patient.name} <Icon name={resolveGenderIconName(patient.gender)} /></h3>
         </Container>
-        <Container style={{ marginTop: '20px'}}>
+        <Container style={{ marginTop: '20px' }}>
           <div>ssn: {patient.ssn} </div>
           <div>occupation: {patient.occupation} </div>
         </Container>
-        <Container style={{ marginTop: '20px'}}>
+        <Container style={{ marginTop: '20px' }}>
           <h4>Entries</h4>
-          {patient.entries?.map(entry => <EntryComponent key={entry.id} entry={entry} />)}
+          {patient.entries ?
+            patient.entries.map(entry => <EntryComponent key={entry.id} entry={entry} />) : null}
         </Container>
       </div>
       : null
@@ -57,17 +58,23 @@ const resolveGenderIconName = (gender: Gender): SemanticICONS => {
   }
 };
 
-const EntryComponent = ({ entry }: {entry: Entry}) => {
+const EntryComponent = ({ entry }: { entry: Entry }) => {
+  const [{ diagnosisList: diagnoses },] = useStateValue();
+  const entryWithDiagnosisDetails = entry.diagnosisCodes ?
+    entry.diagnosisCodes.map(code =>
+      Object.getOwnPropertyNames(diagnoses).includes(code) ?
+        diagnoses[code] : { code, name: '' }) : [];
+
   return (
     <>
-    <Container>
-      {entry.date}: <span style={{fontStyle: "italic"}}>{entry.description}</span>
-    </Container>
-    <Container>
-      <ul>
-        {entry.diagnosisCodes?.map(code => (<li key={code}>{code}</li>))}
-      </ul>
-    </Container>
+      <Container>
+        {entry.date}: <span style={{ fontStyle: "italic" }}>{entry.description}</span>
+      </Container>
+      <Container>
+        <ul>
+          {entryWithDiagnosisDetails.map(dg => (<li key={dg.code}>{dg.code} {dg.name}</li>))}
+        </ul>
+      </Container>
     </>
   );
 };
