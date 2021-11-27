@@ -18,7 +18,6 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const newPatient = toPatient(req.body);
   res.send(patientsService.addPatient(newPatient));
 });

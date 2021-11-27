@@ -1,40 +1,33 @@
 import { Entry, Gender, HealthCheckRating, NewPatient, Patient } from "../types/types";
 import { parse as parseUuid } from 'uuid';
 
-type PatientFields = {
-  id: unknown,
-  name: unknown,
-  dateOfBirth: unknown,
-  ssn: unknown,
-  gender: unknown,
-  occupation: unknown,
-  entries: Entry[]
-};
+export const toNewPatient = (object: unknown): NewPatient => {
+  const obj = object as NewPatient;
 
-type NewPatientFields = Omit<PatientFields, 'id' | 'entries'>;
-
-export const toNewPatient = ({ 
-        name,
-        dateOfBirth,
-        ssn,
-        gender,
-        occupation }: NewPatientFields): NewPatient => {
   const newPatient: NewPatient = {
-    name: parseString(name, 'name'),
-    dateOfBirth: parseDate(dateOfBirth, 'date of birth'),
-    ssn: parseString(ssn, 'ssn'),
-    gender: parseGender(gender),
-    occupation: parseString(occupation, 'occupation'),
+    name: parseString(obj.name, 'name'),
+    dateOfBirth: parseDate(obj.dateOfBirth, 'date of birth'),
+    ssn: parseString(obj.ssn, 'ssn'),
+    gender: parseGender(obj.gender),
+    occupation: parseString(obj.occupation, 'occupation'),
   };
 
   return newPatient;
 };
 
-export const toPatient = ({ id, entries, ...rest }: PatientFields): Patient => {
+export const toPatient = (object: unknown): Patient => {
+  const obj = object as Patient;
+
   const patient = {
-    id: parseId(id),
-    entries: entries.map(entry => toEntry(entry)),
-    ...toNewPatient({...rest}),
+    id: parseId(obj.id),
+    entries: obj.entries ? obj.entries.map(entry => toEntry(entry)) : [],
+    ...toNewPatient({
+      name: obj.name,
+      dateOfBirth: obj.dateOfBirth,
+      ssn: obj.ssn,
+      gender: obj.gender,
+      occupation: obj.occupation
+    }),
   };
 
   return patient;
@@ -59,8 +52,8 @@ export const toEntry = (object: unknown): Entry => {
         type: 'OccupationalHealthcare',
         employerName: parseString(obj.employerName, 'employer name'),
         sickLeave: obj.sickLeave ? {
-            startDate: parseDate(obj.sickLeave.startDate, 'sick leave start date'),
-            endDate: parseDate(obj.sickLeave.endDate, 'sick leave end date'),
+          startDate: parseDate(obj.sickLeave.startDate, 'sick leave start date'),
+          endDate: parseDate(obj.sickLeave.endDate, 'sick leave end date'),
         } : undefined
       };
     case 'Hospital':

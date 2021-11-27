@@ -1,7 +1,6 @@
 import patientsData from '../../data/patients';
 import { NewPatient, Patient, PatientNoSensitive } from '../types/types';
 import { v1 as uuid } from 'uuid';
-import { toPatient } from '../utils/utils';
 
 const getPatients = (): Array<PatientNoSensitive> => {
   return patientsData.map(({ ssn: _ssn, ...rest }) => ({ ...rest }) as PatientNoSensitive);
@@ -12,11 +11,11 @@ const getPatientById = (id: string): Patient | undefined => {
 };
 
 const addPatient = (newPatient: NewPatient): Patient => {
-  const patient = toPatient({
+  const patient = {
     id: uuid(),
     entries: [],
     ...newPatient
-  });
+  } as Patient;
   patientsData.push(patient);
   return patient;
 };
