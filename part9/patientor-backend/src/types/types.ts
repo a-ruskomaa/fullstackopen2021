@@ -44,26 +44,30 @@ interface OccupationalHealthcareEntry extends BaseEntry {
     type: 'OccupationalHealthcare',
     employerName: string,
     sickLeave?: {
-      startDate: string,
-      endDate: string,
+        startDate: string,
+        endDate: string,
     },
 }
 
 interface HospitalEntry extends BaseEntry {
     type: 'Hospital',
     discharge: {
-      date: string,
-      criteria: string,
+        date: string,
+        criteria: string,
     },
 }
 
 export type Entry =
-  | HospitalEntry
-  | OccupationalHealthcareEntry
-  | HealthCheckEntry;
+    | HospitalEntry
+    | OccupationalHealthcareEntry
+    | HealthCheckEntry;
 
 export type PatientNoSensitive = Omit<Patient, 'ssn'>;
 
 export type PublicPatient = Omit<Patient, 'ssn' | 'entries'>;
 
 export type NewPatient = Omit<Patient, 'id' | 'entries'>;
+
+export type NewEntry = UnionOmit<Entry, 'id'>;
+
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
