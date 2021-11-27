@@ -1,13 +1,7 @@
-import { NewEntry, Entry } from '../types/types';
+import { NewEntry, Entry, Patient } from '../types/types';
 import { v1 as uuid } from 'uuid';
-import patientsService from './patientsService';
 
-const addEntry = (newEntry: NewEntry, patientId: string): Entry => {
-  const patient = patientsService.getPatientById(patientId);
-
-  if (patient == undefined) {
-    throw new Error('no patient found');
-  }
+const addEntry = (newEntry: NewEntry, patient: Patient): Entry => {
 
   const entry = {
     id: uuid(),
