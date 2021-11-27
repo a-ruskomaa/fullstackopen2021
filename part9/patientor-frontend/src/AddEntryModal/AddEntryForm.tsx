@@ -4,6 +4,7 @@ import { Button, Form, Grid, Select } from "semantic-ui-react";
 import { DiagnosisSelection, NumberField, SelectFieldOption, TextField } from "../components/FormField";
 import { Entry, EntryType, UnionOmit } from "../types";
 import { useStateValue } from "../state";
+import { isDate } from "../utils";
 
 export type EntryFormValues = UnionOmit<Entry, 'id'>;
 
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const requiredError = "Field is required";
+const dateFormatError = "Invalid date";
 
 const baseInitialValues = {
   description: '',
@@ -94,7 +96,10 @@ const FormWithEntryType = ({
       }
       if (!values.date) {
         errors.date = requiredError;
+      } else if (!isDate(values.date)) {
+        errors.date = dateFormatError;
       }
+
       if (!values.specialist) {
         errors.specialist = requiredError;
       }
@@ -157,6 +162,7 @@ const FormWithEntryType = ({
   </Formik>);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const useEntrySubForm = (entrytype: EntryType): [fields: ReactFragment, validation: (values: any, errors: { [field: string]: string }) => { [field: string]: string }, initialValues: EntryFormValues] => {
   switch (entrytype) {
     case EntryType.HealthCheck:
@@ -199,9 +205,12 @@ const useEntrySubForm = (entrytype: EntryType): [fields: ReactFragment, validati
           />
         </>,
         (values, errors) => {
-          if (!values.discharge.date) {
+          if (!values.discharge?.date) {
             errors['discharge.date'] = requiredError;
+          } else if (!isDate(values.discharge.date)) {
+            errors['discharge.date'] = dateFormatError;
           }
+
           if (!values.discharge.criteria) {
             errors['discharge.criteria'] = requiredError;
           }
@@ -242,12 +251,19 @@ const useEntrySubForm = (entrytype: EntryType): [fields: ReactFragment, validati
           if (!values.specialist) {
             errors.specialist = requiredError;
           }
-          if (!values.sickLeave.endDate) {
-            errors['sickLeave.endDate'] = requiredError;
-          }
-          if (!values.sickLeave.startDate) {
+
+          if (!values.sickLeave?.startDate) {
             errors['sickLeave.startDate'] = requiredError;
+          } else if (!isDate(values.sickLeave.startDate)) {
+            errors['sickLeave.startDate'] = dateFormatError;
           }
+
+          if (!values.sickLeave?.endDate) {
+            errors['sickLeave.endDate'] = requiredError;
+          } else if (!isDate(values.sickLeave.endDate)) {
+            errors['sickLeave.endDate'] = dateFormatError;
+          }
+
           return errors;
         },
         {
