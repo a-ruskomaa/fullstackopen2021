@@ -1,17 +1,17 @@
 import React from 'react';
 import { Container, Icon, SemanticICONS } from 'semantic-ui-react';
 import { useStateValue } from '../state';
-import { Entry, HealthCheckEntry, HospitalEntry, OccupationalHealthcareEntry } from '../types';
+import { Entry, EntryType, HealthCheckEntry, HospitalEntry, OccupationalHealthcareEntry } from '../types';
 import { assertNever } from '../utils';
 import HealthRatingBar from './HealthRatingBar';
 
 const EntryDetails = ({ entry }: { entry: Entry }) => {
   switch (entry.type) {
-    case "HealthCheck":
+    case EntryType.HealthCheck:
       return <HealthCheckEntryDetails entry={entry} />;
-    case "Hospital":
+    case EntryType.Hospital:
       return <HospitalEntryDetails entry={entry} />;
-    case "OccupationalHealthcare":
+    case EntryType.OccupationalHealthcare:
       return <OccupationalHealthcareEntryDetails entry={entry} />;
     default:
       return assertNever(entry);

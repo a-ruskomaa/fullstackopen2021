@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 
-import { TextField, SelectField, GenderOption } from "../components/FormField";
+import { TextField, SelectField, SelectFieldOption } from "../components/FormField";
 import { Gender, MinimalPatient } from "../types";
 
 /*
@@ -10,6 +10,12 @@ import { Gender, MinimalPatient } from "../types";
  * because those are irrelevant for new patient object.
  */
 export type PatientFormValues = Omit<MinimalPatient, "id" | "entries">;
+
+// structure of a single option
+export interface GenderOption extends SelectFieldOption {
+  value: Gender;
+  label: string;
+}
 
 interface Props {
   onSubmit: (values: PatientFormValues) => void;
