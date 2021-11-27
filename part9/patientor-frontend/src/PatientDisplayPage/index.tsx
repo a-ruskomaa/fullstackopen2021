@@ -1,11 +1,13 @@
 import React from "react";
 import axios from "axios";
-import { Container, Icon, SemanticICONS } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 
-import { Entry, Gender, Patient } from "../types";
+import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import { addPatientDetails, useStateValue } from "../state";
 import { useParams } from "react-router-dom";
+import GenderIcon from "../components/GenderIcon";
+import EntryDetails from "../components/EntryDetails";
 
 const PatientDisplayPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,7 +33,7 @@ const PatientDisplayPage = () => {
     patient ?
       <div className="App">
         <Container>
-          <h3>{patient.name} <Icon name={resolveGenderIconName(patient.gender)} /></h3>
+          <h3>{patient.name} <GenderIcon gender={patient.gender} /></h3>
         </Container>
         <Container style={{ marginTop: '20px' }}>
           <div>ssn: {patient.ssn} </div>
@@ -39,43 +41,11 @@ const PatientDisplayPage = () => {
         </Container>
         <Container style={{ marginTop: '20px' }}>
           <h4>Entries</h4>
-          {patient.entries ?
-            patient.entries.map(entry => <EntryComponent key={entry.id} entry={entry} />) : null}
+          {patient.entries && patient.entries.length > 0 ?
+            patient.entries.map(entry => <EntryDetails key={entry.id} entry={entry} />) : <div>{'No entries found'}</div>}
         </Container>
       </div>
       : null
-  );
-};
-
-const resolveGenderIconName = (gender: Gender): SemanticICONS => {
-  switch (gender) {
-    case Gender.Male:
-      return 'mars';
-    case Gender.Female:
-      return 'venus';
-    default:
-      return 'genderless';
-  }
-};
-
-const EntryComponent = ({ entry }: { entry: Entry }) => {
-  const [{ diagnosisList: diagnoses },] = useStateValue();
-  const entryWithDiagnosisDetails = entry.diagnosisCodes ?
-    entry.diagnosisCodes.map(code =>
-      Object.getOwnPropertyNames(diagnoses).includes(code) ?
-        diagnoses[code] : { code, name: '' }) : [];
-
-  return (
-    <>
-      <Container>
-        {entry.date}: <span style={{ fontStyle: "italic" }}>{entry.description}</span>
-      </Container>
-      <Container>
-        <ul>
-          {entryWithDiagnosisDetails.map(dg => (<li key={dg.code}>{dg.code} {dg.name}</li>))}
-        </ul>
-      </Container>
-    </>
   );
 };
 
