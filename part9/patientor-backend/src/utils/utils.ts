@@ -1,4 +1,4 @@
-import { Entry, Gender, HealthCheckRating, NewPatient, Patient } from "../types/types";
+import { Entry, Gender, HealthCheckRating, NewEntry, NewPatient, Patient } from "../types/types";
 import { parse as parseUuid } from 'uuid';
 
 export const toNewPatient = (object: unknown): NewPatient => {
@@ -16,34 +16,41 @@ export const toNewPatient = (object: unknown): NewPatient => {
 };
 
 export const toPatient = (object: unknown): Patient => {
-  const obj = object as Patient;
+  const { id, entries, ...rest } = object as Patient;
 
   const patient = {
-    id: parseId(obj.id),
-    entries: obj.entries ? obj.entries.map(entry => toEntry(entry)) : [],
+    id: parseId(id),
+    entries: entries ? entries.map(entry => toEntry(entry)) : [],
     ...toNewPatient({
-      name: obj.name,
-      dateOfBirth: obj.dateOfBirth,
-      ssn: obj.ssn,
-      gender: obj.gender,
-      occupation: obj.occupation
+      ...rest
     }),
   };
 
   return patient;
 };
 
-
 export const toEntry = (object: unknown): Entry => {
-  const obj = object as Entry;
+  const { id, ...rest } = object as Entry;
 
   const entry = {
-    id: parseString(obj.id, 'id'),
-    description: parseString(obj.id, 'description'),
-    date: parseDate(obj.id, 'date'),
-    specialist: parseString(obj.id, 'specialist'),
-    diagnosisCodes: obj.diagnosisCodes?.map(code => parseString(code, 'diagnosis code'))
+    id: parseString(id, 'id'),
+    ...toNewEntry({
+      ...rest
+    })
   } as Entry;
+
+  return entry;
+};
+
+export const toNewEntry = (object: unknown): NewEntry => {
+  const obj = object as NewEntry;
+
+  const entry = {
+    description: parseString(obj.description, 'description'),
+    date: parseDate(obj.date, 'date'),
+    specialist: parseString(obj.specialist, 'specialist'),
+    diagnosisCodes: obj.diagnosisCodes?.map(code => parseString(code, 'diagnosis code'))
+  } as NewEntry;
 
   switch (obj.type) {
     case 'OccupationalHealthcare':
